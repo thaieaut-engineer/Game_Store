@@ -1,0 +1,24 @@
+# Dependencies
+/vendor/
+
+# Configuration & Secrets
+.env
+config/Mail.php
+config/database.php
+
+# User Uploads
+/uploads/*
+!/uploads/.gitkeep
+
+# Logs and Temp
+*.log
+/tmp/
+.phpunit.result.cache
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# Debug/Test Files
+debug_login.php
+test_session.php
