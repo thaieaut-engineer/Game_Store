@@ -145,6 +145,16 @@ CREATE TABLE reviews (
     FOREIGN KEY (game_id) REFERENCES games(id) ON DELETE CASCADE
 );
 
+-- AI logs table
+CREATE TABLE ai_logs (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    question TEXT,
+    answer TEXT,
+    type VARCHAR(50),
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
 -- Insert default admin user (password: admin123)
 INSERT INTO users (name, email, password, role) VALUES 
 ('Admin', 'admin@example.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin');

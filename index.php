@@ -22,6 +22,7 @@ $routes = [
     'about' => ['AboutController', 'index'],
     'support' => ['SupportController', 'index'],
     'tutorial' => ['TutorialController', 'index'],
+    'tutorial/ask' => ['TutorialController', 'ask'],
     'auth/login' => ['AuthController', 'login'],
     'auth/register' => ['AuthController', 'register'],
     'auth/logout' => ['AuthController', 'logout'],
