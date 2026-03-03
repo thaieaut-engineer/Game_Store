@@ -18,6 +18,7 @@ $route = explode('?', $route)[0]; // Remove query string
 $routes = [
     '' => ['HomeController', 'index'],
     'game' => ['GameController', 'index'],
+    'category' => ['CategoryController', 'index'],
     'game/detail' => ['GameController', 'detail'],
     'about' => ['AboutController', 'index'],
     'support' => ['SupportController', 'index'],

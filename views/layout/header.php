@@ -27,6 +27,12 @@
                         <a class="nav-link" href="<?php echo BASE_URL; ?>">Store</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="<?php echo BASE_URL; ?>game">Games</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?php echo BASE_URL; ?>category">Categories</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="<?php echo BASE_URL; ?>about">About Us</a>
                     </li>
                     <li class="nav-item">
@@ -41,7 +47,8 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="<?php echo BASE_URL; ?>#recommend">Recommend</a></li>
-                            <li><a class="dropdown-item" href="<?php echo BASE_URL; ?>game">Categories</a></li>
+                            <li><a class="dropdown-item" href="<?php echo BASE_URL; ?>game">Games</a></li>
+                            <li><a class="dropdown-item" href="<?php echo BASE_URL; ?>category">Categories</a></li>
                             <li><a class="dropdown-item" href="<?php echo BASE_URL; ?>tutorial">Tutorial</a></li>
                             <li><a class="dropdown-item" href="<?php echo BASE_URL; ?>#special">Special Section</a></li>
                         </ul>

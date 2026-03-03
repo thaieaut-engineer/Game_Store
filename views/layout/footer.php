@@ -25,8 +25,9 @@
             <div class="col-lg-2 col-md-4">
                 <h6 class="footer-title">STORE</h6>
                 <ul class="footer-list">
-                    <li><a href="<?php echo BASE_URL; ?>">Trang chủ</a></li>
+                    <li><a href="<?php echo BASE_URL; ?>game">Trang chủ</a></li>
                     <li><a href="<?php echo BASE_URL; ?>game">Cửa hàng</a></li>
+                    <li><a href="<?php echo BASE_URL; ?>category">Chủ đề</a></li>
                     <li><a href="<?php echo BASE_URL; ?>#special">Ưu đãi</a></li>
                     <li><a href="#">Game mới</a></li>
                 </ul>
