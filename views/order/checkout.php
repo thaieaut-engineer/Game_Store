@@ -5,7 +5,7 @@ require_once __DIR__ . '/../layout/header.php';
 
 <div class="container my-5">
     <h2 class="mb-4">Thanh Toán</h2>
-    
+
     <div class="row">
         <div class="col-md-8">
             <div class="card mb-4">
@@ -16,7 +16,6 @@ require_once __DIR__ . '/../layout/header.php';
                             <tr>
                                 <th>Game</th>
                                 <th>Giá</th>
-                                <th>Số lượng</th>
                                 <th>Tổng</th>
                             </tr>
                         </thead>
@@ -25,11 +24,10 @@ require_once __DIR__ . '/../layout/header.php';
                                 <tr>
                                     <td><?php echo $item['title']; ?></td>
                                     <td>
-                                        <?php 
+                                        <?php
                                         $price = $item['sale_price'] ?? $item['price'];
                                         echo number_format($price); ?>đ
                                     </td>
-                                    <td><?php echo $item['quantity']; ?></td>
                                     <td><?php echo number_format($price * $item['quantity']); ?>đ</td>
                                 </tr>
                             <?php endforeach; ?>
@@ -37,18 +35,23 @@ require_once __DIR__ . '/../layout/header.php';
                     </table>
                 </div>
             </div>
-            
+
             <form action="<?php echo BASE_URL; ?>order/checkout" method="POST">
+                <?php if (isset($buyNowId) && $buyNowId > 0): ?>
+                    <input type="hidden" name="buy_now" value="<?php echo $buyNowId; ?>">
+                <?php endif; ?>
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Phương Thức Thanh Toán</h5>
                         <div class="mb-3">
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="payment_method" id="bank" value="Bank Transfer" required>
+                                <input class="form-check-input" type="radio" name="payment_method" id="bank"
+                                    value="Bank Transfer" required>
                                 <label class="form-check-label" for="bank">Chuyển khoản ngân hàng</label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="payment_method" id="momo" value="MoMo" required>
+                                <input class="form-check-input" type="radio" name="payment_method" id="momo"
+                                    value="MoMo" required>
                                 <label class="form-check-label" for="momo">Ví MoMo</label>
                             </div>
                         </div>
@@ -57,7 +60,7 @@ require_once __DIR__ . '/../layout/header.php';
                 </div>
             </form>
         </div>
-        
+
         <div class="col-md-4">
             <div class="card">
                 <div class="card-body">

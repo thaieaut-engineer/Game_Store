@@ -152,6 +152,11 @@ class AuthController
                 if ($user['role'] === 'admin') {
                     redirect('admin/dashboard');
                 } else {
+                    $redirectUrl = $_GET['redirect'] ?? '';
+                    if (!empty($redirectUrl)) {
+                        header("Location: " . urldecode($redirectUrl));
+                        exit();
+                    }
                     redirect('');
                 }
             } else {

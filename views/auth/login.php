@@ -9,7 +9,9 @@ require_once __DIR__ . '/../layout/header.php';
             <div class="card">
                 <div class="card-body">
                     <h2 class="card-title text-center mb-4">Đăng Nhập</h2>
-                    <form action="<?php echo BASE_URL; ?>auth/login" method="POST">
+                    <form
+                        action="<?php echo BASE_URL; ?>auth/login<?php echo !empty($_GET) ? '?' . http_build_query($_GET) : ''; ?>"
+                        method="POST">
                         <div class="mb-3">
                             <label for="email" class="form-label">Email</label>
                             <input type="email" class="form-control" id="email" name="email" required>

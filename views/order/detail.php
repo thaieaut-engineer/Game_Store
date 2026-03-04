@@ -5,7 +5,7 @@ require_once __DIR__ . '/../layout/header.php';
 
 <div class="container my-5">
     <h2 class="mb-4">Chi Tiết Đơn Hàng #<?php echo $order['id']; ?></h2>
-    
+
     <div class="row">
         <div class="col-md-8">
             <div class="card mb-4">
@@ -16,7 +16,6 @@ require_once __DIR__ . '/../layout/header.php';
                             <tr>
                                 <th>Game</th>
                                 <th>Giá</th>
-                                <th>Số lượng</th>
                                 <th>Tổng</th>
                             </tr>
                         </thead>
@@ -29,7 +28,6 @@ require_once __DIR__ . '/../layout/header.php';
                                         </a>
                                     </td>
                                     <td><?php echo number_format($item['price']); ?>đ</td>
-                                    <td><?php echo $item['quantity']; ?></td>
                                     <td><?php echo number_format($item['price'] * $item['quantity']); ?>đ</td>
                                 </tr>
                             <?php endforeach; ?>
@@ -38,14 +36,14 @@ require_once __DIR__ . '/../layout/header.php';
                 </div>
             </div>
         </div>
-        
+
         <div class="col-md-4">
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Thông Tin Thanh Toán</h5>
                     <hr>
                     <p><strong>Phương thức:</strong> <?php echo $order['payment_method']; ?></p>
-                    <p><strong>Trạng thái:</strong> 
+                    <p><strong>Trạng thái:</strong>
                         <?php
                         $statusLabels = [
                             'pending' => ['label' => 'Chờ duyệt', 'class' => 'warning'],

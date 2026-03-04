@@ -27,7 +27,13 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-define('BASE_URL', 'http://localhost/Game_Store/');
+// Dynamic BASE_URL detection
+$protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? 'https' : 'http';
+$host = $_SERVER['HTTP_HOST'] ?? 'localhost';
+$script_name = $_SERVER['SCRIPT_NAME'] ?? '/Game_Store/index.php';
+$base_dir = str_replace('index.php', '', $script_name);
+define('BASE_URL', $protocol . '://' . $host . $base_dir);
+
 define('UPLOAD_PATH', __DIR__ . '/../uploads/');
 define('TOKEN_EXPIRY', 30 * 60); // 30 minutes in seconds
 
@@ -73,9 +79,11 @@ function sanitize($data)
 
 function validateInput($input)
 {
+    if ($input === null || $input === '')
+        return true;
     // Check for SQL injection patterns
     $dangerous = ['union', 'select', 'insert', 'update', 'delete', 'drop', 'exec', 'script', '<script', 'javascript:', 'onerror=', 'onload='];
-    $input_lower = strtolower($input);
+    $input_lower = strtolower((string) $input);
     foreach ($dangerous as $pattern) {
         if (strpos($input_lower, $pattern) !== false) {
             return false;
@@ -92,20 +100,7 @@ function isLoggedIn()
     }
 
     // Check session first (faster and works immediately after login)
-    // Check for user_id and user_name (set immediately after login)
     if (isset($_SESSION['user_id']) && isset($_SESSION['user_name']) && !empty($_SESSION['user_id'])) {
-        // If we have session data, user is logged in
-        // Optionally verify token if it exists
-        if (isset($_SESSION['auth_token'])) {
-            require_once __DIR__ . '/../models/UserToken.php';
-            $tokenModel = new UserToken();
-            $user = $tokenModel->validateToken($_SESSION['auth_token']);
-            if ($user !== false) {
-                return true;
-            }
-        }
-        // Even without token validation, if we have session user data, consider logged in
-        // This handles the case right after login before cookie is fully set
         return true;
     }
 
@@ -146,7 +141,7 @@ function isLoggedIn()
         return false;
     }
 
-    // Update session with user data and token for faster future checks
+    // Update session with user data
     $_SESSION['user_id'] = $user['id'];
     $_SESSION['user_name'] = $user['name'];
     $_SESSION['user_email'] = $user['email'];
@@ -164,9 +159,8 @@ function getCurrentUser()
         session_start();
     }
 
-    // Check session first for performance (works immediately after login)
+    // Check session first
     if (isset($_SESSION['user_id']) && isset($_SESSION['user_name']) && !empty($_SESSION['user_id'])) {
-        // Build user from session - this is fastest and works immediately
         $user = [
             'id' => $_SESSION['user_id'],
             'name' => $_SESSION['user_name'],
@@ -175,19 +169,6 @@ function getCurrentUser()
             'avatar' => $_SESSION['user_avatar'] ?? 'default-avatar.png',
             'status' => 1
         ];
-
-        // If we have token in session, verify it's still valid (optional)
-        if (isset($_SESSION['auth_token'])) {
-            require_once __DIR__ . '/../models/UserToken.php';
-            $tokenModel = new UserToken();
-            $validatedUser = $tokenModel->validateToken($_SESSION['auth_token']);
-            if ($validatedUser && $validatedUser['id'] == $_SESSION['user_id']) {
-                // Return validated user from database (has all fields)
-                return $validatedUser;
-            }
-        }
-
-        // Return user built from session
         return $user;
     }
 
@@ -200,7 +181,6 @@ function getCurrentUser()
     $tokenModel = new UserToken();
     $user = $tokenModel->validateToken($_COOKIE['auth_token']);
 
-    // Cache user info in session if valid
     if ($user) {
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['user_name'] = $user['name'];

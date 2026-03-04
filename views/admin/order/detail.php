@@ -18,7 +18,6 @@ require_once __DIR__ . '/../layout/header.php';
                         <tr>
                             <th>Game</th>
                             <th>Giá</th>
-                            <th>Số lượng</th>
                             <th>Tổng</th>
                         </tr>
                     </thead>
@@ -27,7 +26,6 @@ require_once __DIR__ . '/../layout/header.php';
                             <tr>
                                 <td><?php echo $item['title']; ?></td>
                                 <td><?php echo number_format($item['price']); ?>đ</td>
-                                <td><?php echo $item['quantity']; ?></td>
                                 <td><?php echo number_format($item['price'] * $item['quantity']); ?>đ</td>
                             </tr>
                         <?php endforeach; ?>
@@ -36,7 +34,7 @@ require_once __DIR__ . '/../layout/header.php';
             </div>
         </div>
     </div>
-    
+
     <div class="col-md-4">
         <div class="card">
             <div class="card-body">
@@ -45,7 +43,7 @@ require_once __DIR__ . '/../layout/header.php';
                 <p><strong>Email:</strong> <?php echo $order['email']; ?></p>
                 <hr>
                 <p><strong>Phương thức:</strong> <?php echo $order['payment_method']; ?></p>
-                <p><strong>Trạng thái:</strong> 
+                <p><strong>Trạng thái:</strong>
                     <?php
                     $statusLabels = [
                         'pending' => ['label' => 'Chờ duyệt', 'class' => 'warning'],
@@ -58,7 +56,7 @@ require_once __DIR__ . '/../layout/header.php';
                     <span class="badge bg-<?php echo $status['class']; ?>"><?php echo $status['label']; ?></span>
                 </p>
                 <p><strong>Tổng cộng:</strong> <?php echo number_format($order['total_amount']); ?>đ</p>
-                
+
                 <?php if ($order['status'] === 'pending'): ?>
                     <form action="<?php echo BASE_URL; ?>admin/order/update-status" method="POST" class="mt-3">
                         <input type="hidden" name="order_id" value="<?php echo $order['id']; ?>">

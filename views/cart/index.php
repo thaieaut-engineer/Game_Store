@@ -5,7 +5,7 @@ require_once __DIR__ . '/../layout/header.php';
 
 <div class="container my-5">
     <h2 class="mb-4">Giỏ Hàng</h2>
-    
+
     <?php if (empty($items)): ?>
         <div class="alert alert-info">
             <h4>Giỏ hàng trống</h4>
@@ -20,7 +20,6 @@ require_once __DIR__ . '/../layout/header.php';
                         <tr>
                             <th>Game</th>
                             <th>Giá</th>
-                            <th>Số lượng</th>
                             <th>Tổng</th>
                             <th></th>
                         </tr>
@@ -30,8 +29,8 @@ require_once __DIR__ . '/../layout/header.php';
                             <tr>
                                 <td>
                                     <div class="d-flex align-items-center">
-                                        <img src="<?php echo BASE_URL . ($item['image'] ?? 'assets/images/no-image.jpg'); ?>" 
-                                             class="me-3" width="80" alt="Game">
+                                        <img src="<?php echo BASE_URL . ($item['image'] ?? 'assets/images/no-image.jpg'); ?>"
+                                            class="me-3" width="80" alt="Game">
                                         <div>
                                             <a href="<?php echo BASE_URL; ?>game/detail?slug=<?php echo $item['slug']; ?>">
                                                 <?php echo $item['title']; ?>
@@ -40,14 +39,9 @@ require_once __DIR__ . '/../layout/header.php';
                                     </div>
                                 </td>
                                 <td>
-                                    <?php 
+                                    <?php
                                     $price = $item['sale_price'] ?? $item['price'];
                                     echo number_format($price); ?>đ
-                                </td>
-                                <td>
-                                    <input type="number" class="form-control form-control-sm update-quantity" 
-                                           data-item-id="<?php echo $item['id']; ?>" 
-                                           value="<?php echo $item['quantity']; ?>" min="1" style="width: 80px;">
                                 </td>
                                 <td><?php echo number_format($price * $item['quantity']); ?>đ</td>
                                 <td>
