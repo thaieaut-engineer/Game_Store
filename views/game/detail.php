@@ -4,21 +4,10 @@ require_once __DIR__ . '/../layout/header.php';
 ?>
 
 <div class="container my-5">
-    <!-- Game Header: Title & Rating -->
+    <!-- Game Header: Title -->
     <div class="row mb-4">
         <div class="col-12 text-center text-md-start">
             <h1 class="display-4 fw-bold"><?php echo $game['title']; ?></h1>
-            <?php if ($ratingStats && $ratingStats['total_reviews'] > 0): ?>
-                <div class="d-flex align-items-center justify-content-center justify-content-md-start mt-2">
-                    <div class="text-warning me-2">
-                        <?php for ($i = 1; $i <= 10; $i++): ?>
-                            <i class="bi bi-star<?php echo $i <= round($ratingStats['avg_rating']) ? '-fill' : ''; ?>"></i>
-                        <?php endfor; ?>
-                    </div>
-                    <span class="fw-bold fs-5"><?php echo number_format($ratingStats['avg_rating'], 1); ?>/10</span>
-                    <span class="ms-2 text-muted">(<?php echo $ratingStats['total_reviews']; ?> đánh giá)</span>
-                </div>
-            <?php endif; ?>
         </div>
     </div>
 
@@ -233,9 +222,25 @@ require_once __DIR__ . '/../layout/header.php';
                 <div class="card-body p-0">
                     <h5 class="border-bottom pb-2 mb-3">Thông Tin Chi Tiết</h5>
                     <ul class="list-unstyled">
+                        <?php if ($ratingStats && $ratingStats['total_reviews'] > 0): ?>
+                            <li class="mb-3 border-bottom pb-2">
+                                <div class="text-muted mb-1">Đánh giá chung:</div>
+                                <div class="d-flex align-items-center">
+                                    <div class="text-warning me-2">
+                                        <?php for ($i = 1; $i <= 10; $i++): ?>
+                                            <i
+                                                class="bi bi-star<?php echo $i <= round($ratingStats['avg_rating']) ? '-fill' : ''; ?>"></i>
+                                        <?php endfor; ?>
+                                    </div>
+                                    <span
+                                        class="fw-bold"><?php echo number_format($ratingStats['avg_rating'], 1); ?>/10</span>
+                                </div>
+                                <small class="text-muted">(<?php echo $ratingStats['total_reviews']; ?> đánh giá)</small>
+                            </li>
+                        <?php endif; ?>
                         <li class="mb-3 d-flex justify-content-between border-bottom pb-2">
                             <span class="text-muted">Ngày phát hành:</span>
-                            <span><?php echo date('d/m/Y', strtotime($game['created_at'])); ?></span>
+                            <span><?php echo !empty($game['release_date']) ? date('d/m/Y', strtotime($game['release_date'])) : 'Chưa xác định'; ?></span>
                         </li>
                         <li class="mb-3 d-flex justify-content-between border-bottom pb-2">
                             <span class="text-muted">Lượt mua:</span>
@@ -352,6 +357,8 @@ require_once __DIR__ . '/../layout/header.php';
                                     <div class="d-flex justify-content-between align-items-center mt-3">
                                         <div>
                                             <?php if ($relatedGame['sale_price']): ?>
+                                                <div class="text-decoration-line-through text-muted small">
+                                                    <?php echo number_format($relatedGame['price']); ?>đ</div>
                                                 <span
                                                     class="text-danger fw-bold fs-5"><?php echo number_format($relatedGame['sale_price']); ?>đ</span>
                                             <?php else: ?>
