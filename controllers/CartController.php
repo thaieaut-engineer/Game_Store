@@ -77,6 +77,21 @@ class CartController
 
             $cart = $this->cartModel->getOrCreateCart($user['id']);
 
+            // Check if already in cart
+            $cartItems = $this->cartModel->getCartItems($cart['id']);
+            $alreadyInCart = false;
+            foreach ($cartItems as $item) {
+                if ($item['game_id'] == $gameId) {
+                    $alreadyInCart = true;
+                    break;
+                }
+            }
+
+            if ($alreadyInCart) {
+                echo json_encode(['success' => false, 'message' => '"' . $game['title'] . '" đã có trong giỏ hàng']);
+                exit;
+            }
+
             if ($this->cartModel->addItem($cart['id'], $gameId, $quantity)) {
                 // Get updated cart count
                 $items = $this->cartModel->getCartItems($cart['id']);

@@ -86,6 +86,10 @@ require_once __DIR__ . '/../layout/header.php';
                                     <a class="btn btn-success btn-lg px-4" href="<?php echo BASE_URL; ?>library">
                                         <i class="bi bi-play-circle"></i> Chơi ngay
                                     </a>
+                                <?php elseif (in_array($game['id'], $cartGameIds)): ?>
+                                    <a class="btn btn-info btn-lg px-4" href="<?php echo BASE_URL; ?>cart">
+                                        <i class="bi bi-cart-check"></i> Đang Trong Giỏ
+                                    </a>
                                 <?php else: ?>
                                     <button class="btn btn-primary btn-lg px-4 add-to-cart"
                                         data-game-id="<?php echo $game['id']; ?>">
@@ -370,6 +374,10 @@ require_once __DIR__ . '/../layout/header.php';
                                         <?php if (in_array($relatedGame['id'], $ownedGameIds)): ?>
                                             <a class="btn btn-outline-success btn-sm" href="<?php echo BASE_URL; ?>library">
                                                 <i class="bi bi-play-circle"></i>
+                                            </a>
+                                        <?php elseif (in_array($relatedGame['id'], $cartGameIds)): ?>
+                                            <a class="btn btn-outline-info btn-sm" href="<?php echo BASE_URL; ?>cart">
+                                                <i class="bi bi-cart-check"></i>
                                             </a>
                                         <?php else: ?>
                                             <button class="btn btn-outline-primary btn-sm add-to-cart"

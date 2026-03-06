@@ -32,7 +32,8 @@ require_once __DIR__ . '/../layout/header.php';
                         <div class="card-body">
                             <h5 class="card-title"><?php echo $game['title']; ?></h5>
                             <p class="card-text text-muted small">
-                                <?php echo substr($game['short_description'] ?? '', 0, 100); ?>...</p>
+                                <?php echo substr($game['short_description'] ?? '', 0, 100); ?>...
+                            </p>
                             <div class="d-flex justify-content-between align-items-center">
                                 <div>
                                     <?php if ($game['sale_price']): ?>
@@ -46,6 +47,10 @@ require_once __DIR__ . '/../layout/header.php';
                                 <?php if (in_array($game['id'], $ownedGameIds)): ?>
                                     <a class="btn btn-success btn-sm" href="<?php echo BASE_URL; ?>library">
                                         <i class="bi bi-play-circle"></i>
+                                    </a>
+                                <?php elseif (in_array($game['id'], $cartGameIds)): ?>
+                                    <a class="btn btn-info btn-sm" href="<?php echo BASE_URL; ?>cart">
+                                        <i class="bi bi-cart-check"></i>
                                     </a>
                                 <?php elseif (isLoggedIn()): ?>
                                     <button class="btn btn-primary btn-sm add-to-cart" data-game-id="<?php echo $game['id']; ?>">

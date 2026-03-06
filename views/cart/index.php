@@ -19,9 +19,8 @@ require_once __DIR__ . '/../layout/header.php';
                     <thead>
                         <tr>
                             <th>Game</th>
-                            <th>Giá</th>
-                            <th>Tổng</th>
-                            <th></th>
+                            <th class="text-end">Giá</th>
+                            <th class="text-center">Hành động</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -32,21 +31,22 @@ require_once __DIR__ . '/../layout/header.php';
                                         <img src="<?php echo BASE_URL . ($item['image'] ?? 'assets/images/no-image.jpg'); ?>"
                                             class="me-3" width="80" alt="Game">
                                         <div>
-                                            <a href="<?php echo BASE_URL; ?>game/detail?slug=<?php echo $item['slug']; ?>">
+                                            <a href="<?php echo BASE_URL; ?>game/detail?slug=<?php echo $item['slug']; ?>"
+                                                class="text-decoration-none fw-bold">
                                                 <?php echo $item['title']; ?>
                                             </a>
                                         </div>
                                     </div>
                                 </td>
-                                <td>
+                                <td class="text-end align-middle">
                                     <?php
                                     $price = $item['sale_price'] ?? $item['price'];
                                     echo number_format($price); ?>đ
                                 </td>
-                                <td><?php echo number_format($price * $item['quantity']); ?>đ</td>
-                                <td>
-                                    <button class="btn btn-danger btn-sm remove-item" data-item-id="<?php echo $item['id']; ?>">
-                                        <i class="bi bi-trash"></i>
+                                <td class="text-center align-middle">
+                                    <button class="btn btn-danger btn-sm remove-item" data-item-id="<?php echo $item['id']; ?>"
+                                        title="Xóa khỏi giỏ hàng">
+                                        <i class="bi bi-trash"></i> Xóa
                                     </button>
                                 </td>
                             </tr>

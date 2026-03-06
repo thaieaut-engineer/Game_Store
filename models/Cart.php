@@ -1,32 +1,35 @@
 <?php
 require_once __DIR__ . '/BaseModel.php';
 
-class Cart extends BaseModel {
-    public function getOrCreateCart($userId) {
+class Cart extends BaseModel
+{
+    public function getOrCreateCart($userId)
+    {
         $query = "SELECT * FROM carts WHERE user_id = :user_id";
         $stmt = $this->conn->prepare($query);
         $stmt->bindValue(':user_id', $userId);
         $stmt->execute();
         $cart = $stmt->fetch(PDO::FETCH_ASSOC);
-        
+
         if (!$cart) {
             $query = "INSERT INTO carts (user_id) VALUES (:user_id)";
             $stmt = $this->conn->prepare($query);
             $stmt->bindValue(':user_id', $userId);
             $stmt->execute();
             $cartId = $this->conn->lastInsertId();
-            
+
             $query = "SELECT * FROM carts WHERE id = :id";
             $stmt = $this->conn->prepare($query);
             $stmt->bindValue(':id', $cartId);
             $stmt->execute();
             $cart = $stmt->fetch(PDO::FETCH_ASSOC);
         }
-        
+
         return $cart;
     }
-    
-    public function addItem($cartId, $gameId, $quantity = 1) {
+
+    public function addItem($cartId, $gameId, $quantity = 1)
+    {
         // Check if item already exists
         $query = "SELECT * FROM cart_items WHERE cart_id = :cart_id AND game_id = :game_id";
         $stmt = $this->conn->prepare($query);
@@ -34,24 +37,34 @@ class Cart extends BaseModel {
         $stmt->bindValue(':game_id', $gameId);
         $stmt->execute();
         $existing = $stmt->fetch(PDO::FETCH_ASSOC);
-        
+
         if ($existing) {
-            $query = "UPDATE cart_items SET quantity = quantity + :quantity WHERE id = :id";
-            $stmt = $this->conn->prepare($query);
-            $stmt->bindValue(':quantity', $quantity);
-            $stmt->bindValue(':id', $existing['id']);
-            return $stmt->execute();
+            // For digital games, we only need 1 per user.
+            // Don't increment quantity, just return true as it's already there.
+            return true;
         } else {
-            $query = "INSERT INTO cart_items (cart_id, game_id, quantity) VALUES (:cart_id, :game_id, :quantity)";
+            $query = "INSERT INTO cart_items (cart_id, game_id, quantity) VALUES (:cart_id, :game_id, 1)";
             $stmt = $this->conn->prepare($query);
             $stmt->bindValue(':cart_id', $cartId);
             $stmt->bindValue(':game_id', $gameId);
-            $stmt->bindValue(':quantity', $quantity);
             return $stmt->execute();
         }
     }
-    
-    public function getCartItems($cartId) {
+
+    public function getUserCartGameIds($userId)
+    {
+        $query = "SELECT ci.game_id 
+                  FROM cart_items ci
+                  JOIN carts c ON ci.cart_id = c.id
+                  WHERE c.user_id = :user_id";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindValue(':user_id', $userId);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_COLUMN);
+    }
+
+    public function getCartItems($cartId)
+    {
         $query = "SELECT ci.*, g.title, g.price, g.sale_price, g.slug, 
                   (SELECT image_url FROM game_images WHERE game_id = g.id LIMIT 1) as image
                   FROM cart_items ci 
@@ -62,30 +75,34 @@ class Cart extends BaseModel {
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-    
-    public function updateQuantity($itemId, $quantity) {
+
+    public function updateQuantity($itemId, $quantity)
+    {
         $query = "UPDATE cart_items SET quantity = :quantity WHERE id = :id";
         $stmt = $this->conn->prepare($query);
         $stmt->bindValue(':quantity', $quantity);
         $stmt->bindValue(':id', $itemId);
         return $stmt->execute();
     }
-    
-    public function removeItem($itemId) {
+
+    public function removeItem($itemId)
+    {
         $query = "DELETE FROM cart_items WHERE id = :id";
         $stmt = $this->conn->prepare($query);
         $stmt->bindValue(':id', $itemId);
         return $stmt->execute();
     }
-    
-    public function clearCart($cartId) {
+
+    public function clearCart($cartId)
+    {
         $query = "DELETE FROM cart_items WHERE cart_id = :cart_id";
         $stmt = $this->conn->prepare($query);
         $stmt->bindValue(':cart_id', $cartId);
         return $stmt->execute();
     }
-    
-    public function getCartTotal($cartId) {
+
+    public function getCartTotal($cartId)
+    {
         $items = $this->getCartItems($cartId);
         $total = 0;
         foreach ($items as $item) {

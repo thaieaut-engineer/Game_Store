@@ -22,11 +22,16 @@ class HomeController
         $popularCategories = $this->categoryModel->getPopular(4);
 
         $ownedGameIds = [];
+        $cartGameIds = [];
         if (isLoggedIn()) {
             $user = getCurrentUser();
             require_once __DIR__ . '/../models/Library.php';
             $libraryModel = new Library();
             $ownedGameIds = $libraryModel->getUserOwnedGameIds($user['id']);
+
+            require_once __DIR__ . '/../models/Cart.php';
+            $cartModel = new Cart();
+            $cartGameIds = $cartModel->getUserCartGameIds($user['id']);
         }
 
         require_once __DIR__ . '/../views/home/index.php';

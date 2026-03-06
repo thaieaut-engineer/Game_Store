@@ -15,6 +15,7 @@ class GameController
     private $mapModel;
     private $reviewModel;
     private $libraryModel;
+    private $cartModel;
 
     public function __construct()
     {
@@ -24,6 +25,7 @@ class GameController
         $this->mapModel = new GameCategoryMap();
         $this->reviewModel = new Review();
         $this->libraryModel = new Library();
+        $this->cartModel = new Cart();
     }
 
     public function index()
@@ -44,9 +46,11 @@ class GameController
         }
 
         $ownedGameIds = [];
+        $cartGameIds = [];
         if (isLoggedIn()) {
             $user = getCurrentUser();
             $ownedGameIds = $this->libraryModel->getUserOwnedGameIds($user['id']);
+            $cartGameIds = $this->cartModel->getUserCartGameIds($user['id']);
         }
 
         require_once __DIR__ . '/../views/game/index.php';
@@ -73,11 +77,13 @@ class GameController
         // Kiểm tra user đã sở hữu game chưa (Library)
         $hasInLibrary = false;
         $ownedGameIds = [];
+        $cartGameIds = [];
         if (isLoggedIn()) {
             $currentUser = getCurrentUser();
             if ($currentUser) {
                 $ownedGameIds = $this->libraryModel->getUserOwnedGameIds($currentUser['id']);
                 $hasInLibrary = in_array($game['id'], $ownedGameIds);
+                $cartGameIds = $this->cartModel->getUserCartGameIds($currentUser['id']);
             }
         }
 
