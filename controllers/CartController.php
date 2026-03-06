@@ -17,6 +17,10 @@ class CartController
     private function requireLogin()
     {
         if (!isLoggedIn()) {
+            if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+                echo json_encode(['success' => false, 'message' => 'Vui lòng đăng nhập để tiếp tục', 'redirect' => BASE_URL . 'auth/login']);
+                exit;
+            }
             $_SESSION['error'] = 'Vui lòng đăng nhập để tiếp tục';
             redirect('auth/login');
         }
@@ -121,6 +125,7 @@ class CartController
     {
         header('Content-Type: application/json');
         $this->requireLogin();
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $itemId = $_POST['item_id'] ?? 0;
 

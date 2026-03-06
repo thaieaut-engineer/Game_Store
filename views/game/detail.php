@@ -358,7 +358,8 @@ require_once __DIR__ . '/../layout/header.php';
                                         <div>
                                             <?php if ($relatedGame['sale_price']): ?>
                                                 <div class="text-decoration-line-through text-muted small">
-                                                    <?php echo number_format($relatedGame['price']); ?>đ</div>
+                                                    <?php echo number_format($relatedGame['price']); ?>đ
+                                                </div>
                                                 <span
                                                     class="text-danger fw-bold fs-5"><?php echo number_format($relatedGame['sale_price']); ?>đ</span>
                                             <?php else: ?>
@@ -366,10 +367,16 @@ require_once __DIR__ . '/../layout/header.php';
                                                     class="fw-bold fs-5"><?php echo number_format($relatedGame['price']); ?>đ</span>
                                             <?php endif; ?>
                                         </div>
-                                        <button class="btn btn-outline-primary btn-sm add-to-cart"
-                                            data-game-id="<?php echo $relatedGame['id']; ?>">
-                                            <i class="bi bi-cart-plus"></i>
-                                        </button>
+                                        <?php if (in_array($relatedGame['id'], $ownedGameIds)): ?>
+                                            <a class="btn btn-outline-success btn-sm" href="<?php echo BASE_URL; ?>library">
+                                                <i class="bi bi-play-circle"></i>
+                                            </a>
+                                        <?php else: ?>
+                                            <button class="btn btn-outline-primary btn-sm add-to-cart"
+                                                data-game-id="<?php echo $relatedGame['id']; ?>">
+                                                <i class="bi bi-cart-plus"></i>
+                                            </button>
+                                        <?php endif; ?>
                                     </div>
                                 </div>
                             </div>

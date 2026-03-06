@@ -10,7 +10,7 @@ require_once __DIR__ . '/../layout/header.php';
             <small class="text-muted">/ <?php echo htmlspecialchars($currentCategory['name']); ?></small>
         <?php endif; ?>
     </h2>
-    
+
     <div class="row">
         <?php if (empty($result['data'])): ?>
             <div class="col-12">
@@ -31,17 +31,23 @@ require_once __DIR__ . '/../layout/header.php';
                         </a>
                         <div class="card-body">
                             <h5 class="card-title"><?php echo $game['title']; ?></h5>
-                            <p class="card-text text-muted small"><?php echo substr($game['short_description'] ?? '', 0, 100); ?>...</p>
+                            <p class="card-text text-muted small">
+                                <?php echo substr($game['short_description'] ?? '', 0, 100); ?>...</p>
                             <div class="d-flex justify-content-between align-items-center">
                                 <div>
                                     <?php if ($game['sale_price']): ?>
-                                        <span class="text-decoration-line-through text-muted"><?php echo number_format($game['price']); ?>đ</span>
+                                        <span
+                                            class="text-decoration-line-through text-muted"><?php echo number_format($game['price']); ?>đ</span>
                                         <span class="text-danger fw-bold"><?php echo number_format($game['sale_price']); ?>đ</span>
                                     <?php else: ?>
                                         <span class="fw-bold"><?php echo number_format($game['price']); ?>đ</span>
                                     <?php endif; ?>
                                 </div>
-                                <?php if (isLoggedIn()): ?>
+                                <?php if (in_array($game['id'], $ownedGameIds)): ?>
+                                    <a class="btn btn-success btn-sm" href="<?php echo BASE_URL; ?>library">
+                                        <i class="bi bi-play-circle"></i>
+                                    </a>
+                                <?php elseif (isLoggedIn()): ?>
                                     <button class="btn btn-primary btn-sm add-to-cart" data-game-id="<?php echo $game['id']; ?>">
                                         <i class="bi bi-cart-plus"></i>
                                     </button>
@@ -57,26 +63,29 @@ require_once __DIR__ . '/../layout/header.php';
             <?php endforeach; ?>
         <?php endif; ?>
     </div>
-    
+
     <!-- Pagination -->
     <?php if ($result['total_pages'] > 1): ?>
         <nav aria-label="Page navigation">
             <ul class="pagination justify-content-center">
                 <?php if ($result['page'] > 1): ?>
                     <li class="page-item">
-                        <a class="page-link" href="?page=<?php echo $result['page'] - 1; ?><?php echo !empty($search) ? '&search=' . urlencode($search) : ''; ?><?php echo !empty($_GET['category']) ? '&category=' . urlencode($_GET['category']) : ''; ?>">Trước</a>
+                        <a class="page-link"
+                            href="?page=<?php echo $result['page'] - 1; ?><?php echo !empty($search) ? '&search=' . urlencode($search) : ''; ?><?php echo !empty($_GET['category']) ? '&category=' . urlencode($_GET['category']) : ''; ?>">Trước</a>
                     </li>
                 <?php endif; ?>
-                
+
                 <?php for ($i = 1; $i <= $result['total_pages']; $i++): ?>
                     <li class="page-item <?php echo $i == $result['page'] ? 'active' : ''; ?>">
-                        <a class="page-link" href="?page=<?php echo $i; ?><?php echo !empty($search) ? '&search=' . urlencode($search) : ''; ?><?php echo !empty($_GET['category']) ? '&category=' . urlencode($_GET['category']) : ''; ?>"><?php echo $i; ?></a>
+                        <a class="page-link"
+                            href="?page=<?php echo $i; ?><?php echo !empty($search) ? '&search=' . urlencode($search) : ''; ?><?php echo !empty($_GET['category']) ? '&category=' . urlencode($_GET['category']) : ''; ?>"><?php echo $i; ?></a>
                     </li>
                 <?php endfor; ?>
-                
+
                 <?php if ($result['page'] < $result['total_pages']): ?>
                     <li class="page-item">
-                        <a class="page-link" href="?page=<?php echo $result['page'] + 1; ?><?php echo !empty($search) ? '&search=' . urlencode($search) : ''; ?><?php echo !empty($_GET['category']) ? '&category=' . urlencode($_GET['category']) : ''; ?>">Sau</a>
+                        <a class="page-link"
+                            href="?page=<?php echo $result['page'] + 1; ?><?php echo !empty($search) ? '&search=' . urlencode($search) : ''; ?><?php echo !empty($_GET['category']) ? '&category=' . urlencode($_GET['category']) : ''; ?>">Sau</a>
                     </li>
                 <?php endif; ?>
             </ul>

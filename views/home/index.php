@@ -47,7 +47,11 @@ require_once __DIR__ . '/../layout/header.php';
                                         <span class="fw-bold"><?php echo number_format($game['price']); ?>đ</span>
                                     <?php endif; ?>
                                 </div>
-                                <?php if (isLoggedIn()): ?>
+                                <?php if (in_array($game['id'], $ownedGameIds)): ?>
+                                    <a class="btn btn-success btn-sm" href="<?php echo BASE_URL; ?>library">
+                                        <i class="bi bi-play-circle"></i>
+                                    </a>
+                                <?php elseif (isLoggedIn()): ?>
                                     <button class="btn btn-primary btn-sm add-to-cart"
                                         data-game-id="<?php echo $game['id']; ?>">
                                         <i class="bi bi-cart-plus"></i>
@@ -120,7 +124,11 @@ require_once __DIR__ . '/../layout/header.php';
                                     <span
                                         class="text-danger fw-bold"><?php echo number_format($game['sale_price']); ?>đ</span>
                                 </div>
-                                <?php if (isLoggedIn()): ?>
+                                <?php if (in_array($game['id'], $ownedGameIds)): ?>
+                                    <a class="btn btn-success btn-sm" href="<?php echo BASE_URL; ?>library">
+                                        <i class="bi bi-play-circle"></i>
+                                    </a>
+                                <?php elseif (isLoggedIn()): ?>
                                     <button class="btn btn-danger btn-sm add-to-cart" data-game-id="<?php echo $game['id']; ?>">
                                         <i class="bi bi-cart-plus"></i>
                                     </button>
