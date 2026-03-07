@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,6 +10,7 @@
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
     <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/style.css">
 </head>
+
 <body>
     <div class="container-fluid">
         <div class="row">
@@ -49,6 +51,11 @@
                                 <i class="bi bi-star"></i> Quản lý Bình luận
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="<?php echo BASE_URL; ?>admin/support">
+                                <i class="bi bi-headset"></i> Quản lý Hỗ trợ
+                            </a>
+                        </li>
                         <li class="nav-item mt-4">
                             <a class="nav-link text-white" href="<?php echo BASE_URL; ?>">
                                 <i class="bi bi-house"></i> Về trang chủ
@@ -62,19 +69,21 @@
                     </ul>
                 </div>
             </nav>
-            
+
             <!-- Main content -->
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4" style="margin-left: 16.666667% !important;">
                 <?php if (isset($_SESSION['success'])): ?>
                     <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
-                        <?php echo $_SESSION['success']; unset($_SESSION['success']); ?>
+                        <?php echo $_SESSION['success'];
+                        unset($_SESSION['success']); ?>
                         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                     </div>
                 <?php endif; ?>
-                
+
                 <?php if (isset($_SESSION['error'])): ?>
                     <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
-                        <?php echo $_SESSION['error']; unset($_SESSION['error']); ?>
+                        <?php echo $_SESSION['error'];
+                        unset($_SESSION['error']); ?>
                         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                     </div>
                 <?php endif; ?>

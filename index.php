@@ -59,6 +59,10 @@ $routes = [
     'admin/order/update-status' => ['AdminOrderController', 'updateStatus'],
     'admin/review' => ['AdminReviewController', 'index'],
     'admin/review/delete' => ['AdminReviewController', 'delete'],
+    'admin/support' => ['AdminSupportController', 'index'],
+    'admin/support/detail' => ['AdminSupportController', 'detail'],
+    'admin/support/update-status' => ['AdminSupportController', 'updateStatus'],
+    'admin/support/delete' => ['AdminSupportController', 'delete'],
     'library' => ['LibraryController', 'index']
 ];
 
