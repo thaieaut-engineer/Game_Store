@@ -44,7 +44,6 @@ class OrderController
 
                 $orderId = $this->orderModel->create($user['id'], $total, $paymentMethod);
                 $this->orderModel->addItem($orderId, $buyNowId, $price, 1);
-                $this->gameModel->incrementSales($buyNowId, 1);
             } else {
                 // Regular cart flow
                 $cart = $this->cartModel->getOrCreateCart($user['id']);
@@ -64,9 +63,6 @@ class OrderController
                 foreach ($items as $item) {
                     $price = $item['sale_price'] ?? $item['price'];
                     $this->orderModel->addItem($orderId, $item['game_id'], $price, $item['quantity']);
-
-                    // Update game sales
-                    $this->gameModel->incrementSales($item['game_id'], $item['quantity']);
                 }
 
                 // Clear cart

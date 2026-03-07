@@ -40,13 +40,14 @@ require_once __DIR__ . '/../layout/header.php';
                                 <div>
                                     <?php if ($game['sale_price']): ?>
                                         <span
-                                            class="text-decoration-line-through text-muted"><?php echo number_format($game['price']); ?>đ</span>
+                                            class="text-decoration-line-through text-muted small"><?php echo number_format($game['price']); ?>đ</span>
                                         <span
                                             class="text-danger fw-bold"><?php echo number_format($game['sale_price']); ?>đ</span>
                                     <?php else: ?>
                                         <span class="fw-bold"><?php echo number_format($game['price']); ?>đ</span>
                                     <?php endif; ?>
                                 </div>
+
                                 <?php if (in_array($game['id'], $ownedGameIds)): ?>
                                     <a class="btn btn-success btn-sm" href="<?php echo BASE_URL; ?>library">
                                         <i class="bi bi-play-circle"></i>
@@ -124,10 +125,11 @@ require_once __DIR__ . '/../layout/header.php';
                             <div class="d-flex justify-content-between align-items-center">
                                 <div>
                                     <span
-                                        class="text-decoration-line-through text-muted"><?php echo number_format($game['price']); ?>đ</span>
+                                        class="text-decoration-line-through text-muted small"><?php echo number_format($game['price']); ?>đ</span>
                                     <span
                                         class="text-danger fw-bold"><?php echo number_format($game['sale_price']); ?>đ</span>
                                 </div>
+
                                 <?php if (in_array($game['id'], $ownedGameIds)): ?>
                                     <a class="btn btn-success btn-sm" href="<?php echo BASE_URL; ?>library">
                                         <i class="bi bi-play-circle"></i>

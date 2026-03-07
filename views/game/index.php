@@ -44,58 +44,59 @@ require_once __DIR__ . '/../layout/header.php';
                                         <span class="fw-bold"><?php echo number_format($game['price']); ?>đ</span>
                                     <?php endif; ?>
                                 </div>
-                                <?php if (in_array($game['id'], $ownedGameIds)): ?>
-                                    <a class="btn btn-success btn-sm" href="<?php echo BASE_URL; ?>library">
-                                        <i class="bi bi-play-circle"></i>
-                                    </a>
-                                <?php elseif (in_array($game['id'], $cartGameIds)): ?>
-                                    <a class="btn btn-info btn-sm" href="<?php echo BASE_URL; ?>cart">
-                                        <i class="bi bi-cart-check"></i>
-                                    </a>
-                                <?php elseif (isLoggedIn()): ?>
-                                    <button class="btn btn-primary btn-sm add-to-cart" data-game-id="<?php echo $game['id']; ?>">
-                                        <i class="bi bi-cart-plus"></i>
-                                    </button>
-                                <?php else: ?>
-                                    <a class="btn btn-outline-primary btn-sm" href="<?php echo BASE_URL; ?>auth/login">
-                                        <i class="bi bi-box-arrow-in-right"></i>
-                                    </a>
-                                <?php endif; ?>
-                            </div>
+
+                            <?php if (in_array($game['id'], $ownedGameIds)): ?>
+                                <a class="btn btn-success btn-sm" href="<?php echo BASE_URL; ?>library">
+                                    <i class="bi bi-play-circle"></i>
+                                </a>
+                            <?php elseif (in_array($game['id'], $cartGameIds)): ?>
+                                <a class="btn btn-info btn-sm" href="<?php echo BASE_URL; ?>cart">
+                                    <i class="bi bi-cart-check"></i>
+                                </a>
+                            <?php elseif (isLoggedIn()): ?>
+                                <button class="btn btn-primary btn-sm add-to-cart" data-game-id="<?php echo $game['id']; ?>">
+                                    <i class="bi bi-cart-plus"></i>
+                                </button>
+                            <?php else: ?>
+                                <a class="btn btn-outline-primary btn-sm" href="<?php echo BASE_URL; ?>auth/login">
+                                    <i class="bi bi-box-arrow-in-right"></i>
+                                </a>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
-            <?php endforeach; ?>
-        <?php endif; ?>
-    </div>
-
-    <!-- Pagination -->
-    <?php if ($result['total_pages'] > 1): ?>
-        <nav aria-label="Page navigation">
-            <ul class="pagination justify-content-center">
-                <?php if ($result['page'] > 1): ?>
-                    <li class="page-item">
-                        <a class="page-link"
-                            href="?page=<?php echo $result['page'] - 1; ?><?php echo !empty($search) ? '&search=' . urlencode($search) : ''; ?><?php echo !empty($_GET['category']) ? '&category=' . urlencode($_GET['category']) : ''; ?>">Trước</a>
-                    </li>
-                <?php endif; ?>
-
-                <?php for ($i = 1; $i <= $result['total_pages']; $i++): ?>
-                    <li class="page-item <?php echo $i == $result['page'] ? 'active' : ''; ?>">
-                        <a class="page-link"
-                            href="?page=<?php echo $i; ?><?php echo !empty($search) ? '&search=' . urlencode($search) : ''; ?><?php echo !empty($_GET['category']) ? '&category=' . urlencode($_GET['category']) : ''; ?>"><?php echo $i; ?></a>
-                    </li>
-                <?php endfor; ?>
-
-                <?php if ($result['page'] < $result['total_pages']): ?>
-                    <li class="page-item">
-                        <a class="page-link"
-                            href="?page=<?php echo $result['page'] + 1; ?><?php echo !empty($search) ? '&search=' . urlencode($search) : ''; ?><?php echo !empty($_GET['category']) ? '&category=' . urlencode($_GET['category']) : ''; ?>">Sau</a>
-                    </li>
-                <?php endif; ?>
-            </ul>
-        </nav>
+            </div>
+        <?php endforeach; ?>
     <?php endif; ?>
+</div>
+
+<!-- Pagination -->
+<?php if ($result['total_pages'] > 1): ?>
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            <?php if ($result['page'] > 1): ?>
+                <li class="page-item">
+                    <a class="page-link"
+                        href="?page=<?php echo $result['page'] - 1; ?><?php echo !empty($search) ? '&search=' . urlencode($search) : ''; ?><?php echo !empty($_GET['category']) ? '&category=' . urlencode($_GET['category']) : ''; ?>">Trước</a>
+                </li>
+            <?php endif; ?>
+
+            <?php for ($i = 1; $i <= $result['total_pages']; $i++): ?>
+                <li class="page-item <?php echo $i == $result['page'] ? 'active' : ''; ?>">
+                    <a class="page-link"
+                        href="?page=<?php echo $i; ?><?php echo !empty($search) ? '&search=' . urlencode($search) : ''; ?><?php echo !empty($_GET['category']) ? '&category=' . urlencode($_GET['category']) : ''; ?>"><?php echo $i; ?></a>
+                </li>
+            <?php endfor; ?>
+
+            <?php if ($result['page'] < $result['total_pages']): ?>
+                <li class="page-item">
+                    <a class="page-link"
+                        href="?page=<?php echo $result['page'] + 1; ?><?php echo !empty($search) ? '&search=' . urlencode($search) : ''; ?><?php echo !empty($_GET['category']) ? '&category=' . urlencode($_GET['category']) : ''; ?>">Sau</a>
+                </li>
+            <?php endif; ?>
+        </ul>
+    </nav>
+<?php endif; ?>
 </div>
 
 <?php require_once __DIR__ . '/../layout/footer.php'; ?>

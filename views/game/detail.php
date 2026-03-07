@@ -248,7 +248,7 @@ require_once __DIR__ . '/../layout/header.php';
                         </li>
                         <li class="mb-3 d-flex justify-content-between border-bottom pb-2">
                             <span class="text-muted">Lượt mua:</span>
-                            <span><?php echo number_format($game['sales_count'] ?? 0); ?></span>
+                            <span><?php echo number_format($game['total_sales'] ?? 0); ?></span>
                         </li>
                     </ul>
                 </div>
@@ -371,29 +371,30 @@ require_once __DIR__ . '/../layout/header.php';
                                                     class="fw-bold fs-5"><?php echo number_format($relatedGame['price']); ?>đ</span>
                                             <?php endif; ?>
                                         </div>
-                                        <?php if (in_array($relatedGame['id'], $ownedGameIds)): ?>
-                                            <a class="btn btn-outline-success btn-sm" href="<?php echo BASE_URL; ?>library">
-                                                <i class="bi bi-play-circle"></i>
-                                            </a>
-                                        <?php elseif (in_array($relatedGame['id'], $cartGameIds)): ?>
-                                            <a class="btn btn-outline-info btn-sm" href="<?php echo BASE_URL; ?>cart">
-                                                <i class="bi bi-cart-check"></i>
-                                            </a>
-                                        <?php else: ?>
-                                            <button class="btn btn-outline-primary btn-sm add-to-cart"
-                                                data-game-id="<?php echo $relatedGame['id']; ?>">
-                                                <i class="bi bi-cart-plus"></i>
-                                            </button>
-                                        <?php endif; ?>
-                                    </div>
+
+                                    <?php if (in_array($relatedGame['id'], $ownedGameIds)): ?>
+                                        <a class="btn btn-outline-success btn-sm" href="<?php echo BASE_URL; ?>library">
+                                            <i class="bi bi-play-circle"></i>
+                                        </a>
+                                    <?php elseif (in_array($relatedGame['id'], $cartGameIds)): ?>
+                                        <a class="btn btn-outline-info btn-sm" href="<?php echo BASE_URL; ?>cart">
+                                            <i class="bi bi-cart-check"></i>
+                                        </a>
+                                    <?php else: ?>
+                                        <button class="btn btn-outline-primary btn-sm add-to-cart"
+                                            data-game-id="<?php echo $relatedGame['id']; ?>">
+                                            <i class="bi bi-cart-plus"></i>
+                                        </button>
+                                    <?php endif; ?>
                                 </div>
                             </div>
                         </div>
-                    <?php endforeach; ?>
-                </div>
+                    </div>
+                <?php endforeach; ?>
             </div>
         </div>
-    <?php endif; ?>
+    </div>
+<?php endif; ?>
 </div>
 
 <?php require_once __DIR__ . '/../layout/footer.php'; ?>
