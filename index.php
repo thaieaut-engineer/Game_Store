@@ -22,6 +22,7 @@ $routes = [
     'game/detail' => ['GameController', 'detail'],
     'about' => ['AboutController', 'index'],
     'support' => ['SupportController', 'index'],
+    'support/submit' => ['SupportController', 'submit'],
     'tutorial' => ['TutorialController', 'index'],
     'tutorial/ask' => ['TutorialController', 'ask'],
     'auth/login' => ['AuthController', 'login'],
