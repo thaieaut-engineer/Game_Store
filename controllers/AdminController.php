@@ -34,6 +34,11 @@ class AdminController
         $userCount = $this->userModel->getAll(1, 1)['total'];
         $orderCount = $this->orderModel->getCount();
         $revenueStats = $this->orderModel->getRevenueStats(30);
+
+        $currentYear = date('Y');
+        $revenueByMonth = $this->orderModel->getRevenueStatsByMonth($currentYear);
+        $revenueByYear = $this->orderModel->getRevenueStatsByYear();
+
         $categorySales = $this->orderModel->getCategorySalesStats();
 
         require_once __DIR__ . '/../views/admin/dashboard.php';
