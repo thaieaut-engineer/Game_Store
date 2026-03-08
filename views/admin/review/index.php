@@ -45,8 +45,12 @@ require_once __DIR__ . '/../layout/header.php';
                         <td><?php echo substr($review['comment'], 0, 100); ?>...</td>
                         <td><?php echo date('d/m/Y H:i', strtotime($review['created_at'])); ?></td>
                         <td>
-                            <a href="<?php echo BASE_URL; ?>admin/review/delete?id=<?php echo $review['id']; ?>" 
-                               class="btn btn-sm btn-danger" onclick="return confirm('Bạn có chắc chắn muốn xóa?')">
+                            <button type="button" class="btn btn-sm btn-info text-white btn-check-ai"
+                                data-id="<?php echo $review['id']; ?>" title="Kiểm duyệt AI">
+                                <i class="bi bi-robot"></i>
+                            </button>
+                            <a href="<?php echo BASE_URL; ?>admin/review/delete?id=<?php echo $review['id']; ?>"
+                                class="btn btn-sm btn-danger" onclick="return confirm('Bạn có chắc chắn muốn xóa?')">
                                 <i class="bi bi-trash"></i>
                             </a>
                         </td>
@@ -63,23 +67,61 @@ require_once __DIR__ . '/../layout/header.php';
         <ul class="pagination justify-content-center">
             <?php if ($result['page'] > 1): ?>
                 <li class="page-item">
-                    <a class="page-link" href="?page=<?php echo $result['page'] - 1; ?><?php echo !empty($_GET['rating']) ? '&rating=' . $_GET['rating'] : ''; ?>">Trước</a>
+                    <a class="page-link"
+                        href="?page=<?php echo $result['page'] - 1; ?><?php echo !empty($_GET['rating']) ? '&rating=' . $_GET['rating'] : ''; ?>">Trước</a>
                 </li>
             <?php endif; ?>
-            
+
             <?php for ($i = 1; $i <= $result['total_pages']; $i++): ?>
                 <li class="page-item <?php echo $i == $result['page'] ? 'active' : ''; ?>">
-                    <a class="page-link" href="?page=<?php echo $i; ?><?php echo !empty($_GET['rating']) ? '&rating=' . $_GET['rating'] : ''; ?>"><?php echo $i; ?></a>
+                    <a class="page-link"
+                        href="?page=<?php echo $i; ?><?php echo !empty($_GET['rating']) ? '&rating=' . $_GET['rating'] : ''; ?>"><?php echo $i; ?></a>
                 </li>
             <?php endfor; ?>
-            
+
             <?php if ($result['page'] < $result['total_pages']): ?>
                 <li class="page-item">
-                    <a class="page-link" href="?page=<?php echo $result['page'] + 1; ?><?php echo !empty($_GET['rating']) ? '&rating=' . $_GET['rating'] : ''; ?>">Sau</a>
+                    <a class="page-link"
+                        href="?page=<?php echo $result['page'] + 1; ?><?php echo !empty($_GET['rating']) ? '&rating=' . $_GET['rating'] : ''; ?>">Sau</a>
                 </li>
             <?php endif; ?>
         </ul>
     </nav>
 <?php endif; ?>
+
+<script>
+    $(document).ready(function () {
+        $('.btn-check-ai').click(function () {
+            const btn = $(this);
+            const id = btn.data('id');
+            const originalHtml = btn.html();
+
+            btn.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>');
+            btn.prop('disabled', true);
+
+            $.ajax({
+                url: '<?php echo BASE_URL; ?>admin/review/check-ai',
+                type: 'POST',
+                data: { id: id },
+                success: function (response) {
+                    if (response.success && response.data) {
+                        const data = response.data;
+                        let statusText = data.is_approved ? 'Đạt tiêu chuẩn' : 'Vi phạm';
+                        alert(`[Kết Quả Kiểm Duyệt AI]\nTrạng thái: ${statusText}\nLý do: ${data.reason}\nSắc thái: ${data.sentiment}`);
+                    } else {
+                        alert('Lỗi: ' + (response.message || 'Không thể kiểm duyệt bằng AI'));
+                    }
+                },
+                error: function () {
+                    alert('Đã xảy ra lỗi khi kết nối tới server.');
+                },
+                complete: function () {
+                    btn.html(originalHtml);
+                    btn.prop('disabled', false);
+                }
+            });
+        });
+    });
+</script>
 
 <?php require_once __DIR__ . '/../layout/footer.php'; ?>

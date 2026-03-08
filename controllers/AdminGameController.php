@@ -4,6 +4,7 @@ require_once __DIR__ . '/../models/Game.php';
 require_once __DIR__ . '/../models/GameImage.php';
 require_once __DIR__ . '/../models/Category.php';
 require_once __DIR__ . '/../models/GameCategoryMap.php';
+require_once __DIR__ . '/../models/AiService.php';
 
 class AdminGameController
 {
@@ -170,6 +171,41 @@ class AdminGameController
             $_SESSION['error'] = 'Có lỗi xảy ra';
         }
         redirect('admin/game');
+    }
+
+    public function generateAiInfo()
+    {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('Content-Type: application/json');
+            echo json_encode(['success' => false, 'message' => 'Invalid request method']);
+            return;
+        }
+
+        $gameName = $_POST['title'] ?? '';
+        $categoryIds = $_POST['categories'] ?? [];
+
+        if (empty($gameName)) {
+            header('Content-Type: application/json');
+            echo json_encode(['success' => false, 'message' => 'Vui lòng nhập tên game trước khi dùng AI']);
+            return;
+        }
+
+        $categoryNames = [];
+        if (!empty($categoryIds) && is_array($categoryIds)) {
+            $categories = $this->categoryModel->getAllNoPagination();
+            foreach ($categories as $cat) {
+                if (in_array($cat['id'], $categoryIds)) {
+                    $categoryNames[] = $cat['name'];
+                }
+            }
+        }
+        $categoryList = implode(', ', $categoryNames);
+
+        $aiService = new AiService();
+        $result = $aiService->generateGameInfo($gameName, $categoryList);
+
+        header('Content-Type: application/json');
+        echo json_encode($result);
     }
 
     private function createSlug($string)

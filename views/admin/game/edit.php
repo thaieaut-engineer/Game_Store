@@ -8,71 +8,88 @@ require_once __DIR__ . '/../layout/header.php';
     <a href="<?php echo BASE_URL; ?>admin/game" class="btn btn-secondary">Quay lại</a>
 </div>
 
-<form action="<?php echo BASE_URL; ?>admin/game/edit?id=<?php echo $game['id']; ?>" method="POST" enctype="multipart/form-data">
+<form action="<?php echo BASE_URL; ?>admin/game/edit?id=<?php echo $game['id']; ?>" method="POST"
+    enctype="multipart/form-data">
     <div class="row">
         <div class="col-md-8">
             <div class="card mb-3">
                 <div class="card-body">
                     <div class="mb-3">
                         <label for="title" class="form-label">Tiêu đề *</label>
-                        <input type="text" class="form-control" id="title" name="title" value="<?php echo $game['title']; ?>" required>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="title" name="title"
+                                value="<?php echo $game['title']; ?>" required>
+                            <button type="button" class="btn btn-info text-white" id="btn-generate-ai">
+                                <i class="bi bi-robot"></i> 🪄 Sinh AI
+                            </button>
+                        </div>
                     </div>
                     <div class="mb-3">
                         <label for="short_description" class="form-label">Mô tả ngắn</label>
-                        <textarea class="form-control" id="short_description" name="short_description" rows="3"><?php echo $game['short_description']; ?></textarea>
+                        <textarea class="form-control" id="short_description" name="short_description"
+                            rows="3"><?php echo $game['short_description']; ?></textarea>
                     </div>
                     <div class="mb-3">
                         <label for="description" class="form-label">Mô tả</label>
-                        <textarea class="form-control" id="description" name="description" rows="10"><?php echo $game['description']; ?></textarea>
+                        <textarea class="form-control" id="description" name="description"
+                            rows="10"><?php echo $game['description']; ?></textarea>
                     </div>
                     <div class="mb-3">
                         <label for="system_requirements" class="form-label">Cấu hình đề xuất</label>
-                        <textarea class="form-control" id="system_requirements" name="system_requirements" rows="10"><?php echo $game['system_requirements']; ?></textarea>
+                        <textarea class="form-control" id="system_requirements" name="system_requirements"
+                            rows="10"><?php echo $game['system_requirements']; ?></textarea>
                     </div>
                 </div>
             </div>
         </div>
-        
+
         <div class="col-md-4">
             <div class="card mb-3">
                 <div class="card-body">
                     <div class="mb-3">
                         <label for="price" class="form-label">Giá *</label>
-                        <input type="number" class="form-control" id="price" name="price" step="0.01" value="<?php echo $game['price']; ?>" required>
+                        <input type="number" class="form-control" id="price" name="price" step="0.01"
+                            value="<?php echo $game['price']; ?>" required>
                     </div>
                     <div class="mb-3">
                         <label for="sale_price" class="form-label">Giá sale</label>
-                        <input type="number" class="form-control" id="sale_price" name="sale_price" step="0.01" value="<?php echo $game['sale_price']; ?>">
+                        <input type="number" class="form-control" id="sale_price" name="sale_price" step="0.01"
+                            value="<?php echo $game['sale_price']; ?>">
                     </div>
                     <div class="mb-3">
                         <label for="stock" class="form-label">Tồn kho</label>
-                        <input type="number" class="form-control" id="stock" name="stock" value="<?php echo $game['stock']; ?>">
+                        <input type="number" class="form-control" id="stock" name="stock"
+                            value="<?php echo $game['stock']; ?>">
                     </div>
                     <div class="mb-3">
                         <label for="release_date" class="form-label">Ngày phát hành</label>
-                        <input type="date" class="form-control" id="release_date" name="release_date" value="<?php echo $game['release_date']; ?>">
+                        <input type="date" class="form-control" id="release_date" name="release_date"
+                            value="<?php echo $game['release_date']; ?>">
                     </div>
                     <div class="mb-3">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="is_upcoming" name="is_upcoming" value="1" <?php echo $game['is_upcoming'] ? 'checked' : ''; ?>>
+                            <input class="form-check-input" type="checkbox" id="is_upcoming" name="is_upcoming"
+                                value="1" <?php echo $game['is_upcoming'] ? 'checked' : ''; ?>>
                             <label class="form-check-label" for="is_upcoming">Game sắp ra mắt</label>
                         </div>
                     </div>
                 </div>
             </div>
-            
+
             <div class="card mb-3">
                 <div class="card-body">
                     <div class="mb-3">
                         <label for="video_url" class="form-label">Video URL</label>
-                        <input type="text" class="form-control" id="video_url" name="video_url" value="<?php echo $game['video_url']; ?>" placeholder="uploads/videos/...">
+                        <input type="text" class="form-control" id="video_url" name="video_url"
+                            value="<?php echo $game['video_url']; ?>" placeholder="uploads/videos/...">
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Ảnh hiện tại</label>
                         <div class="row">
                             <?php foreach ($images as $image): ?>
                                 <div class="col-6 mb-2">
-                                    <img src="<?php echo BASE_URL . $image['image_url']; ?>" class="img-fluid" alt="Game Image">
+                                    <img src="<?php echo BASE_URL . $image['image_url']; ?>" class="img-fluid"
+                                        alt="Game Image">
                                 </div>
                             <?php endforeach; ?>
                         </div>
@@ -83,13 +100,13 @@ require_once __DIR__ . '/../layout/header.php';
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Chủ đề</label>
-                        <?php 
+                        <?php
                         $selectedCategories = array_column($gameCategories, 'id');
-                        foreach ($categories as $category): 
-                        ?>
+                        foreach ($categories as $category):
+                            ?>
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="categories[]" value="<?php echo $category['id']; ?>" 
-                                       id="cat_<?php echo $category['id']; ?>" <?php echo in_array($category['id'], $selectedCategories) ? 'checked' : ''; ?>>
+                                <input class="form-check-input" type="checkbox" name="categories[]"
+                                    value="<?php echo $category['id']; ?>" id="cat_<?php echo $category['id']; ?>" <?php echo in_array($category['id'], $selectedCategories) ? 'checked' : ''; ?>>
                                 <label class="form-check-label" for="cat_<?php echo $category['id']; ?>">
                                     <?php echo $category['name']; ?>
                                 </label>
@@ -100,19 +117,67 @@ require_once __DIR__ . '/../layout/header.php';
             </div>
         </div>
     </div>
-    
+
     <button type="submit" class="btn btn-primary">Cập Nhật</button>
 </form>
 
 <script>
-$(document).ready(function() {
-    $('#description').summernote({
-        height: 300
+    $(document).ready(function () {
+        $('#description').summernote({
+            height: 300
+        });
+        $('#system_requirements').summernote({
+            height: 300
+        });
+
+        $('#btn-generate-ai').click(function () {
+            const title = $('#title').val();
+            if (!title) {
+                alert('Vui lòng nhập tiêu đề game trước!');
+                return;
+            }
+
+            const categories = [];
+            $('input[name="categories[]"]:checked').each(function () {
+                categories.push($(this).val());
+            });
+
+            const btn = $(this);
+            const originalText = btn.html();
+            btn.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Đang xử lý...');
+            btn.prop('disabled', true);
+
+            $.ajax({
+                url: '<?php echo BASE_URL; ?>admin/game/generateAiInfo',
+                type: 'POST',
+                data: { title: title, categories: categories },
+                success: function (response) {
+                    if (response.success && response.data) {
+                        const data = response.data;
+                        if (data.description) {
+                            $('#description').summernote('code', data.description);
+                        }
+                        if (data.minimum_requirements || data.recommended_requirements) {
+                            let reqHtml = '';
+                            if (data.minimum_requirements) reqHtml += '<p><strong>Tối thiểu:</strong><br>' + data.minimum_requirements + '</p>';
+                            if (data.recommended_requirements) reqHtml += '<p><strong>Đề nghị:</strong><br>' + data.recommended_requirements + '</p>';
+                            $('#system_requirements').summernote('code', reqHtml);
+                        }
+                        alert('Sinh dữ liệu bằng AI thành công!');
+                    } else {
+                        alert('Lỗi: ' + (response.message || 'Không thể sinh dữ liệu'));
+                    }
+                },
+                error: function () {
+                    alert('Đã xảy ra lỗi khi kết nối tới server.');
+                },
+                complete: function () {
+                    btn.html(originalText);
+                    btn.prop('disabled', false);
+                }
+            });
+        });
     });
-    $('#system_requirements').summernote({
-        height: 300
-    });
-});
 </script>
 
 <?php require_once __DIR__ . '/../layout/footer.php'; ?>
