@@ -152,8 +152,12 @@ require_once __DIR__ . '/../layout/header.php';
                 type: 'POST',
                 data: { title: title, categories: categories },
                 success: function (response) {
+                    console.log('AI Response:', response);
                     if (response.success && response.data) {
                         const data = response.data;
+                        if (data.short_description) {
+                            $('#short_description').val(data.short_description);
+                        }
                         if (data.description) {
                             $('#description').summernote('code', data.description);
                         }

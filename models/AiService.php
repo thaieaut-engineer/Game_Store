@@ -57,6 +57,7 @@ class AiService
     {
         $systemPrompt = "Bạn là một chuyên gia về game. Hãy viết thông tin cho tựa game được yêu cầu. Trả về kết quả dưới định dạng JSON theo cấu trúc sau:
 {
+    \"short_description\": \"Mô tả ngắn gọn về game (khoảng 1-2 câu)\",
     \"description\": \"Mô tả chi tiết, hấp dẫn về game (khoảng 3-4 đoạn)\",
     \"minimum_requirements\": \"Thông tin cấu hình tối thiểu (OS, Processor, Memory, Graphics, Storage) dạng text, mỗi thông tin cách nhau bằng dấu phẩy hoặc |\",
     \"recommended_requirements\": \"Thông tin cấu hình đề nghị dạng text, mỗi thông tin cách nhau bằng dấu phẩy hoặc |\"
@@ -67,18 +68,23 @@ Chỉ trả về JSON hợp lệ, không kèm markdown hay văn bản nào khác
 
         $result = $this->makeRequest($systemPrompt, $userPrompt, 0.7);
         if ($result['success']) {
-            // Cố gắng parse JSON
+            // Robust JSON extraction
             $content = trim($result['content']);
-            if (strpos($content, '```json') === 0) {
-                $content = substr($content, 7);
-                $content = rtrim($content, '`');
+
+            // Try to find JSON start and end
+            $start = strpos($content, '{');
+            $end = strrpos($content, '}');
+
+            if ($start !== false && $end !== false && $end > $start) {
+                $jsonContent = substr($content, $start, $end - $start + 1);
+                $json = json_decode($jsonContent, true);
+
+                if (json_last_error() === JSON_ERROR_NONE) {
+                    return ['success' => true, 'data' => $json];
+                }
             }
-            $json = json_decode(trim($content), true);
-            if (json_last_error() === JSON_ERROR_NONE) {
-                return ['success' => true, 'data' => $json];
-            } else {
-                return ['success' => false, 'message' => 'Không thể parse kết quả từ AI: ' . json_last_error_msg()];
-            }
+
+            return ['success' => false, 'message' => 'Không thể parse kết quả từ AI: ' . json_last_error_msg()];
         }
 
         return $result;
