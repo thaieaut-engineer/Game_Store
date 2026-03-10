@@ -97,32 +97,6 @@ Chỉ trả về JSON hợp lệ, không kèm markdown hay văn bản nào khác
         return $result;
     }
 
-    public function moderateReview($reviewContent, $rating = 0)
-    {
-        $systemPrompt = "Bạn là hệ thống kiểm duyệt nội dung của một cửa hàng game. Hãy phân tích đánh giá của người dùng xem có vi phạm tiêu chuẩn cộng đồng (chứa từ ngữ thô tục, xúc phạm, spam, quảng cáo rác) hay không.
-Trả về một JSON duy nhất có cấu trúc:
-{
-    \"is_approved\": true/false,
-    \"reason\": \"Lý do nếu không được duyệt, hoặc nhận xét ngắn gọn nếu được duyệt\",
-    \"sentiment\": \"positive/neutral/negative\"
-}";
-        $userPrompt = "Số sao: $rating\nNội dung: $reviewContent";
 
-        $result = $this->makeRequest($systemPrompt, $userPrompt, 0.3);
-        if ($result['success']) {
-            $content = trim($result['content']);
-            if (strpos($content, '```json') === 0) {
-                $content = substr($content, 7);
-                $content = rtrim($content, '`');
-            }
-            $json = json_decode(trim($content), true);
-            if (json_last_error() === JSON_ERROR_NONE) {
-                return ['success' => true, 'data' => $json];
-            } else {
-                return ['success' => false, 'message' => 'JSON Error'];
-            }
-        }
-        return $result;
-    }
 }
 ?>

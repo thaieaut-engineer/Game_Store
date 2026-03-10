@@ -45,10 +45,6 @@ require_once __DIR__ . '/../layout/header.php';
                         <td><?php echo substr($review['comment'], 0, 100); ?>...</td>
                         <td><?php echo date('d/m/Y H:i', strtotime($review['created_at'])); ?></td>
                         <td>
-                            <button type="button" class="btn btn-sm btn-info text-white btn-check-ai"
-                                data-id="<?php echo $review['id']; ?>" title="Kiểm duyệt AI">
-                                <i class="bi bi-robot"></i>
-                            </button>
                             <a href="<?php echo BASE_URL; ?>admin/review/delete?id=<?php echo $review['id']; ?>"
                                 class="btn btn-sm btn-danger" onclick="return confirm('Bạn có chắc chắn muốn xóa?')">
                                 <i class="bi bi-trash"></i>
@@ -89,39 +85,6 @@ require_once __DIR__ . '/../layout/header.php';
     </nav>
 <?php endif; ?>
 
-<script>
-    $(document).ready(function () {
-        $('.btn-check-ai').click(function () {
-            const btn = $(this);
-            const id = btn.data('id');
-            const originalHtml = btn.html();
 
-            btn.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>');
-            btn.prop('disabled', true);
-
-            $.ajax({
-                url: '<?php echo BASE_URL; ?>admin/review/check-ai',
-                type: 'POST',
-                data: { id: id },
-                success: function (response) {
-                    if (response.success && response.data) {
-                        const data = response.data;
-                        let statusText = data.is_approved ? 'Đạt tiêu chuẩn' : 'Vi phạm';
-                        alert(`[Kết Quả Kiểm Duyệt AI]\nTrạng thái: ${statusText}\nLý do: ${data.reason}\nSắc thái: ${data.sentiment}`);
-                    } else {
-                        alert('Lỗi: ' + (response.message || 'Không thể kiểm duyệt bằng AI'));
-                    }
-                },
-                error: function () {
-                    alert('Đã xảy ra lỗi khi kết nối tới server.');
-                },
-                complete: function () {
-                    btn.html(originalHtml);
-                    btn.prop('disabled', false);
-                }
-            });
-        });
-    });
-</script>
 
 <?php require_once __DIR__ . '/../layout/footer.php'; ?>

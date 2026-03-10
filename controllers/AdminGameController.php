@@ -4,8 +4,6 @@ require_once __DIR__ . '/../models/Game.php';
 require_once __DIR__ . '/../models/GameImage.php';
 require_once __DIR__ . '/../models/Category.php';
 require_once __DIR__ . '/../models/GameCategoryMap.php';
-require_once __DIR__ . '/../models/AiService.php';
-
 class AdminGameController
 {
     private $gameModel;
