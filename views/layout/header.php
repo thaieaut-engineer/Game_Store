@@ -10,6 +10,7 @@
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
     <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/style.css">
     <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/chatbot.css">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/home.css?v=1.1">
 </head>
 
 <body class="d-flex flex-column min-vh-100">

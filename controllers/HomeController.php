@@ -16,10 +16,10 @@ class HomeController
 
     public function index()
     {
-        $recommendedGames = $this->gameModel->getRecommended(8);
-        $upcomingGames = $this->gameModel->getUpcoming(8);
-        $saleGames = $this->gameModel->getOnSale(8);
-        $popularCategories = $this->categoryModel->getPopular(4);
+        $recommendedGames = $this->gameModel->getRecommended(18);
+        $upcomingGames = $this->gameModel->getUpcoming(10);
+        $saleGames = $this->gameModel->getOnSale(18);
+        $popularCategories = $this->categoryModel->getPopular(10);
 
         $ownedGameIds = [];
         $cartGameIds = [];

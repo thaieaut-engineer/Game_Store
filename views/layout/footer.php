@@ -82,6 +82,7 @@
 <script>
     const BASE_URL = '<?php echo BASE_URL; ?>';
 </script>
+<script src="<?php echo BASE_URL; ?>assets/js/home.js?v=1.1"></script>
 <script src="<?php echo BASE_URL; ?>assets/js/main.js"></script>
 <script src="<?php echo BASE_URL; ?>assets/js/chatbot.js"></script>
 </body>

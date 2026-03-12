@@ -33,9 +33,19 @@ class GameController
         $page = $_GET['page'] ?? 1;
         $search = $_GET['search'] ?? '';
         $categoryId = $_GET['category'] ?? null;
+        $type = $_GET['type'] ?? '';
 
         if (!empty($search)) {
             $result = $this->gameModel->search($search, $page, 12);
+        } elseif ($type === 'recommended') {
+            $result = ['data' => $this->gameModel->getRecommended(50), 'total_pages' => 1, 'page' => 1];
+            $pageTitle = 'Game Đề Xuất';
+        } elseif ($type === 'sale') {
+            $result = ['data' => $this->gameModel->getOnSale(50), 'total_pages' => 1, 'page' => 1];
+            $pageTitle = 'Game Đang Giảm Giá';
+        } elseif ($type === 'upcoming') {
+            $result = ['data' => $this->gameModel->getUpcoming(50), 'total_pages' => 1, 'page' => 1];
+            $pageTitle = 'Game Sắp Ra Mắt';
         } else {
             $result = $this->gameModel->getAll($page, 12, $search, $categoryId);
         }
