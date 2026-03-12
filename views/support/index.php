@@ -98,6 +98,44 @@ require_once __DIR__ . '/../layout/header.php';
         opacity: 0.9;
         color: white;
     }
+
+    /* Dark Theme Overrides */
+    body.dark-theme .support-card {
+        background: var(--card-bg);
+        border-color: var(--card-border);
+    }
+
+    body.dark-theme .faq-section {
+        background: transparent;
+    }
+
+    body.dark-theme .contact-icon {
+        background: rgba(255, 255, 255, 0.05);
+        color: #a78bfa;
+    }
+
+    body.dark-theme .accordion-item {
+        background: var(--card-bg);
+        border: 1px solid var(--card-border);
+    }
+
+    body.dark-theme .accordion-button {
+        background-color: var(--card-bg);
+        color: var(--text-color);
+    }
+
+    body.dark-theme .accordion-button:not(.collapsed) {
+        background-color: #667eea;
+        color: white;
+    }
+
+    body.dark-theme .accordion-button::after {
+        filter: invert(1) grayscale(100%) brightness(200%);
+    }
+
+    body.dark-theme .accordion-body {
+        color: var(--text-color);
+    }
 </style>
 
 <!-- HERO SECTION -->

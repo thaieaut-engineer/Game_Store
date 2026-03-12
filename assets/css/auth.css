@@ -108,6 +108,11 @@ body.auth-page::before {
     color: #fff;
 }
 
+.form-control::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+    opacity: 1;
+}
+
 .form-label {
     font-weight: 500;
     margin-bottom: 8px;

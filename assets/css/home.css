@@ -198,17 +198,18 @@
     flex-direction: column !important;
     height: 100% !important;
     border-radius: 12px !important;
-    background: #1a1a1a !important;
-    border: 1px solid #333 !important;
+    background: var(--card-bg) !important;
+    border: 1px solid var(--card-border) !important;
     transition: transform 0.3s ease, box-shadow 0.3s ease !important;
     overflow: hidden !important;
     width: 100% !important; /* Ensure it fills the carousel-item-custom */
+    color: var(--text-color) !important;
 }
 
 .game-card:hover {
     transform: translateY(-5px) !important;
     box-shadow: 0 10px 20px rgba(0,0,0,0.5) !important;
-    border-color: #0d6efd !important;
+    border-color: var(--link-color) !important;
 }
 
 .game-card a.game-image-link {
@@ -235,7 +236,7 @@
     display: flex !important;
     flex-direction: column !important;
     flex-grow: 1 !important;
-    background: #1a1a1a !important;
+    background: var(--card-bg) !important;
 }
 
 .game-card .card-title {
@@ -249,11 +250,13 @@
     overflow: hidden !important;
     height: 2.8rem !important; /* Fixed title height for two lines */
     line-height: 1.4rem !important;
-    color: #fff !important;
+    color: var(--text-color) !important;
 }
 
 .game-card .card-text {
     margin-bottom: 0.5rem !important;
+    color: var(--text-color) !important;
+    opacity: 0.8;
 }
 
 .game-card .price-container {
