@@ -52,10 +52,6 @@ require_once __DIR__ . '/../layout/header.php';
                         <input type="number" class="form-control" id="sale_price" name="sale_price" step="0.01">
                     </div>
                     <div class="mb-3">
-                        <label for="stock" class="form-label">Tồn kho</label>
-                        <input type="number" class="form-control" id="stock" name="stock" value="9999">
-                    </div>
-                    <div class="mb-3">
                         <label for="release_date" class="form-label">Ngày phát hành</label>
                         <input type="date" class="form-control" id="release_date" name="release_date">
                     </div>

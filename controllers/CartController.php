@@ -63,12 +63,6 @@ class CartController
                 exit;
             }
 
-            // Check stock
-            if ($game['stock'] < $quantity) {
-                echo json_encode(['success' => false, 'message' => 'Số lượng không đủ. Còn lại: ' . $game['stock']]);
-                exit;
-            }
-
             $user = getCurrentUser();
             if (!$user) {
                 echo json_encode(['success' => false, 'message' => 'Phiên đăng nhập đã hết hạn', 'redirect' => BASE_URL . 'auth/login']);

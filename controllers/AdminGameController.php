@@ -43,7 +43,6 @@ class AdminGameController
                 'short_description' => sanitize($_POST['short_description'] ?? ''),
                 'description' => $_POST['description'] ?? '',
                 'system_requirements' => $_POST['system_requirements'] ?? '',
-                'stock' => $_POST['stock'] ?? 9999,
                 'release_date' => $_POST['release_date'] ?? null,
                 'is_upcoming' => isset($_POST['is_upcoming']) ? 1 : 0
             ];
@@ -100,7 +99,6 @@ class AdminGameController
                 'short_description' => sanitize($_POST['short_description'] ?? ''),
                 'description' => $_POST['description'] ?? '',
                 'system_requirements' => $_POST['system_requirements'] ?? '',
-                'stock' => $_POST['stock'] ?? 9999,
                 'release_date' => $_POST['release_date'] ?? null,
                 'is_upcoming' => isset($_POST['is_upcoming']) ? 1 : 0
             ];

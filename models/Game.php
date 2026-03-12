@@ -3,8 +3,8 @@ require_once __DIR__ . '/BaseModel.php';
 
 class Game extends BaseModel {
     public function create($data) {
-        $query = "INSERT INTO games (title, slug, price, sale_price, video_url, short_description, description, system_requirements, stock, release_date, is_upcoming) 
-                  VALUES (:title, :slug, :price, :sale_price, :video_url, :short_description, :description, :system_requirements, :stock, :release_date, :is_upcoming)";
+        $query = "INSERT INTO games (title, slug, price, sale_price, video_url, short_description, description, system_requirements, release_date, is_upcoming) 
+                  VALUES (:title, :slug, :price, :sale_price, :video_url, :short_description, :description, :system_requirements, :release_date, :is_upcoming)";
         $stmt = $this->conn->prepare($query);
         $stmt->bindValue(':title', $data['title']);
         $stmt->bindValue(':slug', $data['slug']);
@@ -14,7 +14,6 @@ class Game extends BaseModel {
         $stmt->bindValue(':short_description', $data['short_description'] ?? null);
         $stmt->bindValue(':description', $data['description'] ?? null);
         $stmt->bindValue(':system_requirements', $data['system_requirements'] ?? null);
-        $stmt->bindValue(':stock', $data['stock'] ?? 9999);
         $stmt->bindValue(':release_date', $data['release_date'] ?? null);
         $stmt->bindValue(':is_upcoming', $data['is_upcoming'] ?? 0);
         $stmt->execute();
@@ -24,7 +23,7 @@ class Game extends BaseModel {
     public function update($id, $data) {
         $query = "UPDATE games SET title = :title, slug = :slug, price = :price, sale_price = :sale_price, 
                   video_url = :video_url, short_description = :short_description, description = :description, 
-                  system_requirements = :system_requirements, stock = :stock, release_date = :release_date, 
+                  system_requirements = :system_requirements, release_date = :release_date, 
                   is_upcoming = :is_upcoming";
         
         if (isset($data['total_sales'])) {
@@ -42,7 +41,6 @@ class Game extends BaseModel {
         $stmt->bindValue(':short_description', $data['short_description'] ?? null);
         $stmt->bindValue(':description', $data['description'] ?? null);
         $stmt->bindValue(':system_requirements', $data['system_requirements'] ?? null);
-        $stmt->bindValue(':stock', $data['stock'] ?? 9999);
         $stmt->bindValue(':release_date', $data['release_date'] ?? null);
         $stmt->bindValue(':is_upcoming', $data['is_upcoming'] ?? 0);
         
