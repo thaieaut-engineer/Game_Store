@@ -3,12 +3,13 @@ require_once __DIR__ . '/BaseModel.php';
 
 class Game extends BaseModel {
     public function create($data) {
-        $query = "INSERT INTO games (title, slug, price, sale_price, video_url, short_description, description, system_requirements, release_date, is_upcoming) 
-                  VALUES (:title, :slug, :price, :sale_price, :video_url, :short_description, :description, :system_requirements, :release_date, :is_upcoming)";
+        $query = "INSERT INTO games (title, slug, price, discount_percent, sale_price, video_url, short_description, description, system_requirements, release_date, is_upcoming) 
+                  VALUES (:title, :slug, :price, :discount_percent, :sale_price, :video_url, :short_description, :description, :system_requirements, :release_date, :is_upcoming)";
         $stmt = $this->conn->prepare($query);
         $stmt->bindValue(':title', $data['title']);
         $stmt->bindValue(':slug', $data['slug']);
         $stmt->bindValue(':price', $data['price']);
+        $stmt->bindValue(':discount_percent', $data['discount_percent'] ?? 0);
         $stmt->bindValue(':sale_price', $data['sale_price'] ?? null);
         $stmt->bindValue(':video_url', $data['video_url'] ?? null);
         $stmt->bindValue(':short_description', $data['short_description'] ?? null);
@@ -21,7 +22,7 @@ class Game extends BaseModel {
     }
     
     public function update($id, $data) {
-        $query = "UPDATE games SET title = :title, slug = :slug, price = :price, sale_price = :sale_price, 
+        $query = "UPDATE games SET title = :title, slug = :slug, price = :price, discount_percent = :discount_percent, sale_price = :sale_price, 
                   video_url = :video_url, short_description = :short_description, description = :description, 
                   system_requirements = :system_requirements, release_date = :release_date, 
                   is_upcoming = :is_upcoming";
@@ -36,6 +37,7 @@ class Game extends BaseModel {
         $stmt->bindValue(':title', $data['title']);
         $stmt->bindValue(':slug', $data['slug']);
         $stmt->bindValue(':price', $data['price']);
+        $stmt->bindValue(':discount_percent', $data['discount_percent'] ?? 0);
         $stmt->bindValue(':sale_price', $data['sale_price'] ?? null);
         $stmt->bindValue(':video_url', $data['video_url'] ?? null);
         $stmt->bindValue(':short_description', $data['short_description'] ?? null);

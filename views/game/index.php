@@ -20,7 +20,10 @@ require_once __DIR__ . '/../layout/header.php';
             <?php foreach ($result['data'] as $game): ?>
                 <div class="col-md-3 mb-4">
                     <div class="card h-100 game-card">
-                        <a href="<?php echo BASE_URL; ?>game/detail?slug=<?php echo $game['slug']; ?>">
+                        <a href="<?php echo BASE_URL; ?>game/detail?slug=<?php echo $game['slug']; ?>" class="game-image-link">
+                            <?php if ($game['discount_percent'] > 0): ?>
+                                <span class="badge bg-danger position-absolute top-0 end-0 m-2" style="z-index:10">-<?php echo $game['discount_percent']; ?>%</span>
+                            <?php endif; ?>
                             <?php
                             require_once __DIR__ . '/../../models/GameImage.php';
                             $imageModel = new GameImage();

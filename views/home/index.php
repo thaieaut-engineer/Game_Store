@@ -41,6 +41,9 @@ require_once __DIR__ . '/../layout/header.php';
                     <div class="carousel-item-custom">
                         <div class="card game-card shadow-sm border-0">
                             <a href="<?php echo BASE_URL; ?>game/detail?slug=<?php echo $game['slug']; ?>" class="game-image-link">
+                                <?php if ($game['discount_percent'] > 0): ?>
+                                    <span class="badge bg-danger position-absolute top-0 end-0 m-2">-<?php echo $game['discount_percent']; ?>%</span>
+                                <?php endif; ?>
                                 <img src="<?php echo $imageUrl; ?>" class="card-img-top" alt="<?php echo $game['title']; ?>">
                             </a>
                             <div class="card-body">
@@ -145,6 +148,9 @@ require_once __DIR__ . '/../layout/header.php';
                     <div class="carousel-item-custom">
                         <div class="card game-card shadow-sm border-0">
                             <a href="<?php echo BASE_URL; ?>game/detail?slug=<?php echo $game['slug']; ?>" class="game-image-link">
+                                <?php if ($game['discount_percent'] > 0): ?>
+                                    <span class="badge bg-danger position-absolute top-0 end-0 m-2">-<?php echo $game['discount_percent']; ?>%</span>
+                                <?php endif; ?>
                                 <img src="<?php echo $imageUrl; ?>" class="card-img-top" alt="<?php echo $game['title']; ?>">
                             </a>
                             <div class="card-body">

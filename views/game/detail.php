@@ -71,8 +71,10 @@ require_once __DIR__ . '/../layout/header.php';
                     <div class="col-md-6 mb-3 mb-md-0">
                         <div class="price-display">
                             <?php if ($game['sale_price']): ?>
-                                <span
-                                    class="text-decoration-line-through text-muted small"><?php echo number_format($game['price']); ?>đ</span>
+                                <div class="d-flex align-items-center mb-1">
+                                    <span class="badge bg-danger me-2">-<?php echo $game['discount_percent']; ?>%</span>
+                                    <span class="text-decoration-line-through text-muted small"><?php echo number_format($game['price']); ?>đ</span>
+                                </div>
                                 <h2 class="text-danger mb-0 fw-bold"><?php echo number_format($game['sale_price']); ?>đ</h2>
                             <?php else: ?>
                                 <h2 class="mb-0 fw-bold"><?php echo number_format($game['price']); ?>đ</h2>
@@ -337,7 +339,10 @@ require_once __DIR__ . '/../layout/header.php';
                     <?php foreach ($relatedGames as $relatedGame): ?>
                         <div class="col-md-3 mb-4">
                             <div class="card h-100 game-card border-0 shadow-sm overflow-hidden">
-                                <a href="<?php echo BASE_URL; ?>game/detail?slug=<?php echo $relatedGame['slug']; ?>">
+                                <a href="<?php echo BASE_URL; ?>game/detail?slug=<?php echo $relatedGame['slug']; ?>" class="game-image-link">
+                                    <?php if ($relatedGame['discount_percent'] > 0): ?>
+                                        <span class="badge bg-danger position-absolute top-0 end-0 m-2" style="z-index:10">-<?php echo $relatedGame['discount_percent']; ?>%</span>
+                                    <?php endif; ?>
                                     <?php
                                     require_once __DIR__ . '/../../models/GameImage.php';
                                     $imageModel = new GameImage();

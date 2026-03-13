@@ -43,7 +43,7 @@ class Cart extends BaseModel
             // Don't increment quantity, just return true as it's already there.
             return true;
         } else {
-            $query = "INSERT INTO cart_items (cart_id, game_id, quantity) VALUES (:cart_id, :game_id, 1)";
+            $query = "INSERT INTO cart_items (cart_id, game_id) VALUES (:cart_id, :game_id)";
             $stmt = $this->conn->prepare($query);
             $stmt->bindValue(':cart_id', $cartId);
             $stmt->bindValue(':game_id', $gameId);
@@ -76,14 +76,7 @@ class Cart extends BaseModel
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function updateQuantity($itemId, $quantity)
-    {
-        $query = "UPDATE cart_items SET quantity = :quantity WHERE id = :id";
-        $stmt = $this->conn->prepare($query);
-        $stmt->bindValue(':quantity', $quantity);
-        $stmt->bindValue(':id', $itemId);
-        return $stmt->execute();
-    }
+
 
     public function removeItem($itemId)
     {
@@ -107,7 +100,7 @@ class Cart extends BaseModel
         $total = 0;
         foreach ($items as $item) {
             $price = $item['sale_price'] ?? $item['price'];
-            $total += $price * $item['quantity'];
+            $total += $price;
         }
         return $total;
     }

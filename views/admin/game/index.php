@@ -25,6 +25,7 @@ require_once __DIR__ . '/../layout/header.php';
                 <th>Tiêu đề</th>
                 <th>Giá</th>
                 <th>Giá sale</th>
+                <th>Giảm giá</th>
                 <th>Lượt bán</th>
                 <th>Thao tác</th>
             </tr>
@@ -32,7 +33,7 @@ require_once __DIR__ . '/../layout/header.php';
         <tbody>
             <?php if (empty($result['data'])): ?>
                 <tr>
-                    <td colspan="6" class="text-center">Không có dữ liệu</td>
+                    <td colspan="7" class="text-center">Không có dữ liệu</td>
                 </tr>
             <?php else: ?>
                 <?php foreach ($result['data'] as $game): ?>
@@ -41,6 +42,13 @@ require_once __DIR__ . '/../layout/header.php';
                         <td><?php echo $game['title']; ?></td>
                         <td><?php echo number_format($game['price']); ?>đ</td>
                         <td><?php echo $game['sale_price'] ? number_format($game['sale_price']) . 'đ' : '-'; ?></td>
+                        <td>
+                            <?php if ($game['discount_percent'] > 0): ?>
+                                <span class="badge bg-danger">-<?php echo $game['discount_percent']; ?>%</span>
+                            <?php else: ?>
+                                -
+                            <?php endif; ?>
+                        </td>
                         <td><?php echo $game['total_sales']; ?></td>
                         <td>
                             <a href="<?php echo BASE_URL; ?>admin/game/edit?id=<?php echo $game['id']; ?>" class="btn btn-sm btn-warning">

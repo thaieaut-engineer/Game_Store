@@ -34,11 +34,16 @@ class AdminGameController
     public function create()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $price = $_POST['price'] ?? 0;
+            $discountPercent = $_POST['discount_percent'] ?? 0;
+            $salePrice = ($discountPercent > 0) ? ($price * (1 - $discountPercent / 100)) : null;
+
             $data = [
                 'title' => sanitize($_POST['title'] ?? ''),
                 'slug' => $this->createSlug($_POST['title'] ?? ''),
-                'price' => $_POST['price'] ?? 0,
-                'sale_price' => !empty($_POST['sale_price']) ? $_POST['sale_price'] : null,
+                'price' => $price,
+                'discount_percent' => $discountPercent,
+                'sale_price' => $salePrice,
                 'video_url' => sanitize($_POST['video_url'] ?? ''),
                 'short_description' => sanitize($_POST['short_description'] ?? ''),
                 'description' => $_POST['description'] ?? '',
@@ -90,11 +95,16 @@ class AdminGameController
         }
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $price = $_POST['price'] ?? 0;
+            $discountPercent = $_POST['discount_percent'] ?? 0;
+            $salePrice = ($discountPercent > 0) ? ($price * (1 - $discountPercent / 100)) : null;
+
             $data = [
                 'title' => sanitize($_POST['title'] ?? ''),
                 'slug' => $this->createSlug($_POST['title'] ?? ''),
-                'price' => $_POST['price'] ?? 0,
-                'sale_price' => !empty($_POST['sale_price']) ? $_POST['sale_price'] : null,
+                'price' => $price,
+                'discount_percent' => $discountPercent,
+                'sale_price' => $salePrice,
                 'video_url' => sanitize($_POST['video_url'] ?? ''),
                 'short_description' => sanitize($_POST['short_description'] ?? ''),
                 'description' => $_POST['description'] ?? '',

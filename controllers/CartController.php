@@ -104,31 +104,8 @@ class CartController
         }
     }
 
-    public function update()
-    {
-        header('Content-Type: application/json');
-        $this->requireLogin();
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $itemId = $_POST['item_id'] ?? 0;
-            $quantity = $_POST['quantity'] ?? 1;
 
-            error_log("Cart/Update: ItemID=$itemId, Quantity=$quantity");
 
-            if (!validateInput($itemId) || !validateInput($quantity) || $quantity < 1) {
-                echo json_encode(['success' => false, 'message' => 'Dữ liệu không hợp lệ']);
-                exit;
-            }
-
-            if ($this->cartModel->updateQuantity($itemId, $quantity)) {
-                $user = getCurrentUser();
-                $cart = $this->cartModel->getOrCreateCart($user['id']);
-                $total = $this->cartModel->getCartTotal($cart['id']);
-                echo json_encode(['success' => true, 'total' => $total]);
-            } else {
-                echo json_encode(['success' => false, 'message' => 'Có lỗi xảy ra']);
-            }
-        }
-    }
 
     public function remove()
     {

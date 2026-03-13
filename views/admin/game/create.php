@@ -48,8 +48,12 @@ require_once __DIR__ . '/../layout/header.php';
                         <input type="number" class="form-control" id="price" name="price" step="0.01" required>
                     </div>
                     <div class="mb-3">
-                        <label for="sale_price" class="form-label">Giá sale</label>
-                        <input type="number" class="form-control" id="sale_price" name="sale_price" step="0.01">
+                        <label for="discount_percent" class="form-label">Giảm giá (%)</label>
+                        <input type="number" class="form-control" id="discount_percent" name="discount_percent" min="0" max="100" value="0">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label text-muted">Giá sau khi giảm (xem trước):</label>
+                        <div id="sale_price_preview" class="form-control bg-light">0đ</div>
                     </div>
                     <div class="mb-3">
                         <label for="release_date" class="form-label">Ngày phát hành</label>
@@ -104,6 +108,18 @@ require_once __DIR__ . '/../layout/header.php';
         $('#system_requirements').summernote({
             height: 300
         });
+
+        // Discount calculation logic
+        function updateSalePrice() {
+            const price = parseFloat($('#price').val()) || 0;
+            const discount = parseInt($('#discount_percent').val()) || 0;
+            const salePrice = Math.round(price * (1 - discount / 100));
+            $('#sale_price_preview').text(new Intl.NumberFormat('vi-VN').format(salePrice) + 'đ');
+        }
+
+        $('#price, #discount_percent').on('input', updateSalePrice);
+        updateSalePrice(); // Initial call
+
 
         $('#btn-generate-ai').click(function () {
             const title = $('#title').val();
