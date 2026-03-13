@@ -28,7 +28,7 @@ require_once __DIR__ . '/../layout/header.php';
                                         $price = $item['sale_price'] ?? $item['price'];
                                         echo number_format($price); ?>đ
                                     </td>
-                                    <td><?php echo number_format($price * $item['quantity']); ?>đ</td>
+                                    <td><?php echo number_format($price); ?>đ</td>
                                 </tr>
                             <?php endforeach; ?>
                         </tbody>

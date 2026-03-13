@@ -56,18 +56,18 @@ require_once __DIR__ . '/../layout/header.php';
     <div class="row text-center">
         <div class="col-md-4">
             <img src="https://randomuser.me/api/portraits/men/32.jpg" class="rounded-circle mb-3" width="120">
-            <h5>Nguyễn Văn A</h5>
-            <p>Founder & Developer</p>
+            <h5>Quang Duy Thai</h5>
+            <p>Leader</p>
         </div>
         <div class="col-md-4">
             <img src="https://randomuser.me/api/portraits/women/44.jpg" class="rounded-circle mb-3" width="120">
-            <h5>Trần Thị B</h5>
-            <p>UI/UX Designer</p>
+            <h5>Truong Hoai Son</h5>
+            <p>Member</p>
         </div>
         <div class="col-md-4">
             <img src="https://randomuser.me/api/portraits/men/65.jpg" class="rounded-circle mb-3" width="120">
-            <h5>Lê Văn C</h5>
-            <p>Marketing Manager</p>
+            <h5>Tran Dinh Dung</h5>
+            <p>Member</p>
         </div>
     </div>
 </section>
