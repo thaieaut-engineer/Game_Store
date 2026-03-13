@@ -63,6 +63,12 @@ class CartController
                 exit;
             }
 
+            // Không cho thêm game sắp ra mắt
+            if (!empty($game['is_upcoming'])) {
+                echo json_encode(['success' => false, 'message' => 'Game sắp ra mắt, chưa thể thêm vào giỏ hàng']); 
+                exit;
+            }
+
             $user = getCurrentUser();
             if (!$user) {
                 echo json_encode(['success' => false, 'message' => 'Phiên đăng nhập đã hết hạn', 'redirect' => BASE_URL . 'auth/login']);

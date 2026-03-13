@@ -118,7 +118,8 @@ class Game extends BaseModel {
     }
     
     public function getOnSale($limit = 8) {
-        $query = "SELECT * FROM games WHERE sale_price IS NOT NULL AND sale_price < price ORDER BY created_at DESC LIMIT :limit";
+        // Chỉ lấy game đã phát hành, không lấy game sắp ra mắt
+        $query = "SELECT * FROM games WHERE is_upcoming = 0 AND sale_price IS NOT NULL AND sale_price < price ORDER BY created_at DESC LIMIT :limit";
         $stmt = $this->conn->prepare($query);
         $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
         $stmt->execute();

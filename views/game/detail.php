@@ -70,7 +70,16 @@ require_once __DIR__ . '/../layout/header.php';
                 <div class="row align-items-center">
                     <div class="col-md-6 mb-3 mb-md-0">
                         <div class="price-display">
-                            <?php if ($game['sale_price']): ?>
+                            <?php if (!empty($game['is_upcoming'])): ?>
+                                <span class="badge bg-secondary mb-2">Sắp ra mắt</span>
+                                <?php if (!empty($game['release_date'])): ?>
+                                    <div class="text-muted small mb-1">
+                                        <i class="bi bi-calendar-event"></i>
+                                        Phát hành: <?php echo date('d/m/Y', strtotime($game['release_date'])); ?>
+                                    </div>
+                                <?php endif; ?>
+                                <h2 class="mb-0 fw-bold"><?php echo number_format($game['price']); ?>đ</h2>
+                            <?php elseif ($game['sale_price']): ?>
                                 <div class="d-flex align-items-center mb-1">
                                     <span class="badge bg-danger me-2">-<?php echo $game['discount_percent']; ?>%</span>
                                     <span class="text-decoration-line-through text-muted small"><?php echo number_format($game['price']); ?>đ</span>
@@ -83,34 +92,43 @@ require_once __DIR__ . '/../layout/header.php';
                     </div>
                     <div class="col-md-6 text-md-end">
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                            <?php if (isLoggedIn()): ?>
-                                <?php if (!empty($hasInLibrary)): ?>
-                                    <a class="btn btn-success btn-lg px-4" href="<?php echo BASE_URL; ?>library">
-                                        <i class="bi bi-play-circle"></i> Chơi ngay
-                                    </a>
-                                <?php elseif (in_array($game['id'], $cartGameIds)): ?>
-                                    <a class="btn btn-info btn-lg px-4" href="<?php echo BASE_URL; ?>cart">
-                                        <i class="bi bi-cart-check"></i> Đang Trong Giỏ
-                                    </a>
+                            <?php if (!empty($game['is_upcoming'])): ?>
+                                <button class="btn btn-secondary btn-lg px-4" disabled>
+                                    <i class="bi bi-clock-history"></i> Game sắp ra mắt
+                                </button>
+                            <?php else: ?>
+                                <?php if (isLoggedIn()): ?>
+                                    <?php if (!empty($hasInLibrary)): ?>
+                                        <a class="btn btn-success btn-lg px-4" href="<?php echo BASE_URL; ?>library">
+                                            <i class="bi bi-play-circle"></i> Chơi ngay
+                                        </a>
+                                    <?php elseif (in_array($game['id'], $cartGameIds)): ?>
+                                        <a class="btn btn-info btn-lg px-4" href="<?php echo BASE_URL; ?>cart">
+                                            <i class="bi bi-cart-check"></i> Đang Trong Giỏ
+                                        </a>
+                                        <a class="btn btn-danger btn-lg px-4" href="<?php echo BASE_URL; ?>order/checkout">
+                                            <i class="bi bi-credit-card"></i> Thanh Toán
+                                        </a>
+                                    <?php else: ?>
+                                        <button class="btn btn-primary btn-lg px-4 add-to-cart"
+                                            data-game-id="<?php echo $game['id']; ?>">
+                                            <i class="bi bi-cart-plus"></i> Thêm Giỏ Hàng
+                                        </button>
+                                        <a class="btn btn-danger btn-lg px-4"
+                                            href="<?php echo BASE_URL; ?>order/checkout?buy_now=<?php echo $game['id']; ?>">
+                                            <i class="bi bi-credit-card"></i> Mua Ngay
+                                        </a>
+                                    <?php endif; ?>
                                 <?php else: ?>
-                                    <button class="btn btn-primary btn-lg px-4 add-to-cart"
-                                        data-game-id="<?php echo $game['id']; ?>">
-                                        <i class="bi bi-cart-plus"></i> Thêm Giỏ Hàng
-                                    </button>
                                     <a class="btn btn-danger btn-lg px-4"
-                                        href="<?php echo BASE_URL; ?>order/checkout?buy_now=<?php echo $game['id']; ?>">
+                                        href="<?php echo BASE_URL; ?>auth/login?redirect=<?php echo urlencode('/Game_Store/order/checkout?buy_now=' . $game['id']); ?>">
                                         <i class="bi bi-credit-card"></i> Mua Ngay
                                     </a>
+                                    <a class="btn btn-outline-primary btn-lg px-4"
+                                        href="<?php echo BASE_URL; ?>auth/login?redirect=<?php echo urlencode($_SERVER['REQUEST_URI']); ?>">
+                                        Đăng nhập
+                                    </a>
                                 <?php endif; ?>
-                            <?php else: ?>
-                                <a class="btn btn-danger btn-lg px-4"
-                                    href="<?php echo BASE_URL; ?>order/checkout?buy_now=<?php echo $game['id']; ?>">
-                                    <i class="bi bi-credit-card"></i> Mua Ngay
-                                </a>
-                                <a class="btn btn-outline-primary btn-lg px-4"
-                                    href="<?php echo BASE_URL; ?>auth/login?redirect=<?php echo urlencode($_SERVER['REQUEST_URI']); ?>">
-                                    Đăng nhập để mua
-                                </a>
                             <?php endif; ?>
                         </div>
                     </div>

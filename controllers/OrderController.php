@@ -97,7 +97,8 @@ class OrderController
                 $total = $game['sale_price'] ?? $game['price'];
             } else {
                 if (!isLoggedIn()) {
-                    redirect('auth/login');
+                    $currentUrl = urlencode($_SERVER['REQUEST_URI']);
+                    redirect("auth/login?redirect=$currentUrl");
                 }
 
                 $user = getCurrentUser();

@@ -48,24 +48,26 @@ require_once __DIR__ . '/../layout/header.php';
                                     <?php endif; ?>
                                 </div>
 
-                            <?php if (in_array($game['id'], $ownedGameIds)): ?>
-                                <a class="btn btn-success btn-sm" href="<?php echo BASE_URL; ?>library">
-                                    <i class="bi bi-play-circle"></i>
-                                </a>
-                            <?php elseif (in_array($game['id'], $cartGameIds)): ?>
-                                <a class="btn btn-info btn-sm" href="<?php echo BASE_URL; ?>cart">
-                                    <i class="bi bi-cart-check"></i>
-                                </a>
-                            <?php elseif (isLoggedIn()): ?>
-                                <button class="btn btn-primary btn-sm add-to-cart" data-game-id="<?php echo $game['id']; ?>">
-                                    <i class="bi bi-cart-plus"></i>
-                                </button>
-                            <?php else: ?>
-                                <a class="btn btn-outline-primary btn-sm" href="<?php echo BASE_URL; ?>auth/login">
-                                    <i class="bi bi-box-arrow-in-right"></i>
-                                </a>
-                            <?php endif; ?>
-                        </div>
+                                <?php if (!empty($game['is_upcoming'])): ?>
+                                    <span class="badge bg-secondary">Sắp ra mắt</span>
+                                <?php elseif (in_array($game['id'], $ownedGameIds)): ?>
+                                    <a class="btn btn-success btn-sm" href="<?php echo BASE_URL; ?>library">
+                                        <i class="bi bi-play-circle"></i>
+                                    </a>
+                                <?php elseif (in_array($game['id'], $cartGameIds)): ?>
+                                    <a class="btn btn-info btn-sm" href="<?php echo BASE_URL; ?>cart">
+                                        <i class="bi bi-cart-check"></i>
+                                    </a>
+                                <?php elseif (isLoggedIn()): ?>
+                                    <button class="btn btn-primary btn-sm add-to-cart" data-game-id="<?php echo $game['id']; ?>">
+                                        <i class="bi bi-cart-plus"></i>
+                                    </button>
+                                <?php else: ?>
+                                    <a class="btn btn-outline-primary btn-sm" href="<?php echo BASE_URL; ?>auth/login">
+                                        <i class="bi bi-box-arrow-in-right"></i>
+                                    </a>
+                                <?php endif; ?>
+                            </div>
                     </div>
                 </div>
             </div>
