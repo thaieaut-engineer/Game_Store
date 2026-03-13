@@ -99,24 +99,25 @@ function isLoggedIn()
         session_start();
     }
 
-    // Check session first (faster and works immediately after login)
-    if (isset($_SESSION['user_id']) && isset($_SESSION['user_name']) && !empty($_SESSION['user_id'])) {
-        return true;
-    }
-
-    // Fallback to cookie check
-    if (!isset($_COOKIE['auth_token'])) {
-        return false;
-    }
-
     require_once __DIR__ . '/../models/UserToken.php';
     $tokenModel = new UserToken();
-    $user = $tokenModel->validateToken($_COOKIE['auth_token']);
 
-    if ($user === false) {
-        // Token invalid or expired, clear session
+    // 1. Ưu tiên kiểm tra token đang lưu trong session (nếu có)
+    if (!empty($_SESSION['auth_token'])) {
+        $user = $tokenModel->validateToken($_SESSION['auth_token']);
+        if ($user) {
+            // Đồng bộ lại thông tin user vào session (phòng trường hợp user đổi tên/avatar)
+            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['user_name'] = $user['name'];
+            $_SESSION['user_email'] = $user['email'];
+            $_SESSION['user_role'] = $user['role'];
+            $_SESSION['user_avatar'] = $user['avatar'] ?? 'default-avatar.png';
+            return true;
+        }
+
+        // Token trong session không còn hợp lệ (bị xóa khi đăng nhập nơi khác / hết hạn)
         $_SESSION = [];
-        // Clear cookie from both paths
+        // Clear cookie từ cả 2 path
         if (PHP_VERSION_ID >= 70300) {
             setcookie('auth_token', '', [
                 'expires' => time() - 3600,
@@ -141,7 +142,41 @@ function isLoggedIn()
         return false;
     }
 
-    // Update session with user data
+    // 2. Nếu chưa có auth_token trong session, fallback sang cookie
+    if (empty($_COOKIE['auth_token'])) {
+        return false;
+    }
+
+    $user = $tokenModel->validateToken($_COOKIE['auth_token']);
+
+    if ($user === false) {
+        // Token invalid or expired, clear session & cookie
+        $_SESSION = [];
+        if (PHP_VERSION_ID >= 70300) {
+            setcookie('auth_token', '', [
+                'expires' => time() - 3600,
+                'path' => '/',
+                'domain' => '',
+                'secure' => false,
+                'httponly' => true,
+                'samesite' => 'Lax'
+            ]);
+            setcookie('auth_token', '', [
+                'expires' => time() - 3600,
+                'path' => '/Game_Store/',
+                'domain' => '',
+                'secure' => false,
+                'httponly' => true,
+                'samesite' => 'Lax'
+            ]);
+        } else {
+            setcookie('auth_token', '', time() - 3600, '/');
+            setcookie('auth_token', '', time() - 3600, '/Game_Store/');
+        }
+        return false;
+    }
+
+    // 3. Token từ cookie hợp lệ -> cập nhật session
     $_SESSION['user_id'] = $user['id'];
     $_SESSION['user_name'] = $user['name'];
     $_SESSION['user_email'] = $user['email'];
@@ -159,38 +194,82 @@ function getCurrentUser()
         session_start();
     }
 
-    // Check session first
-    if (isset($_SESSION['user_id']) && isset($_SESSION['user_name']) && !empty($_SESSION['user_id'])) {
-        $user = [
-            'id' => $_SESSION['user_id'],
-            'name' => $_SESSION['user_name'],
-            'email' => $_SESSION['user_email'] ?? '',
-            'role' => $_SESSION['user_role'] ?? 'user',
-            'avatar' => $_SESSION['user_avatar'] ?? 'default-avatar.png',
-            'status' => 1
-        ];
-        return $user;
-    }
+    require_once __DIR__ . '/../models/UserToken.php';
+    $tokenModel = new UserToken();
 
-    // Fallback to cookie check
-    if (!isset($_COOKIE['auth_token'])) {
+    // 1. Nếu có auth_token trong session thì validate trực tiếp
+    if (!empty($_SESSION['auth_token'])) {
+        $user = $tokenModel->validateToken($_SESSION['auth_token']);
+        if ($user) {
+            // Đồng bộ lại session
+            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['user_name'] = $user['name'];
+            $_SESSION['user_email'] = $user['email'];
+            $_SESSION['user_role'] = $user['role'];
+            $_SESSION['user_avatar'] = $user['avatar'] ?? 'default-avatar.png';
+
+            return [
+                'id' => $user['id'],
+                'name' => $user['name'],
+                'email' => $user['email'],
+                'role' => $user['role'],
+                'avatar' => $user['avatar'] ?? 'default-avatar.png',
+                'status' => $user['status'] ?? 1,
+            ];
+        }
+
+        // Token trong session không còn hợp lệ
+        $_SESSION = [];
+        if (PHP_VERSION_ID >= 70300) {
+            setcookie('auth_token', '', [
+                'expires' => time() - 3600,
+                'path' => '/',
+                'domain' => '',
+                'secure' => false,
+                'httponly' => true,
+                'samesite' => 'Lax'
+            ]);
+            setcookie('auth_token', '', [
+                'expires' => time() - 3600,
+                'path' => '/Game_Store/',
+                'domain' => '',
+                'secure' => false,
+                'httponly' => true,
+                'samesite' => 'Lax'
+            ]);
+        } else {
+            setcookie('auth_token', '', time() - 3600, '/');
+            setcookie('auth_token', '', time() - 3600, '/Game_Store/');
+        }
         return null;
     }
 
-    require_once __DIR__ . '/../models/UserToken.php';
-    $tokenModel = new UserToken();
-    $user = $tokenModel->validateToken($_COOKIE['auth_token']);
-
-    if ($user) {
-        $_SESSION['user_id'] = $user['id'];
-        $_SESSION['user_name'] = $user['name'];
-        $_SESSION['user_email'] = $user['email'];
-        $_SESSION['user_role'] = $user['role'];
-        $_SESSION['user_avatar'] = $user['avatar'] ?? 'default-avatar.png';
-        $_SESSION['auth_token'] = $_COOKIE['auth_token'];
+    // 2. Nếu không có auth_token trong session, thử từ cookie
+    if (empty($_COOKIE['auth_token'])) {
+        return null;
     }
 
-    return $user;
+    $user = $tokenModel->validateToken($_COOKIE['auth_token']);
+    if ($user === false) {
+        return null;
+    }
+
+    // Lưu lại vào session để những lần sau dùng nhanh hơn
+    $_SESSION['user_id'] = $user['id'];
+    $_SESSION['user_name'] = $user['name'];
+    $_SESSION['user_email'] = $user['email'];
+    $_SESSION['user_role'] = $user['role'];
+    $_SESSION['user_avatar'] = $user['avatar'] ?? 'default-avatar.png';
+    $_SESSION['auth_token'] = $_COOKIE['auth_token'];
+
+    return [
+        'id' => $user['id'],
+        'name' => $user['name'],
+        'email' => $user['email'],
+        'role' => $user['role'],
+        'avatar' => $user['avatar'] ?? 'default-avatar.png',
+        'status' => $user['status'] ?? 1,
+    ];
 }
 
 function isAdmin()

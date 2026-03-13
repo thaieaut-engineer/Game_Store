@@ -172,14 +172,28 @@ class AuthController
     {
         if (isset($_COOKIE['auth_token'])) {
             $this->tokenModel->deleteToken($_COOKIE['auth_token']);
-            setcookie('auth_token', '', [
-                'expires' => time() - 3600,
-                'path' => '/',
-                'domain' => '',
-                'secure' => false,
-                'httponly' => true,
-                'samesite' => 'Lax'
-            ]);
+            // Xóa cookie trên cả 2 path để chắc chắn
+            if (PHP_VERSION_ID >= 70300) {
+                setcookie('auth_token', '', [
+                    'expires' => time() - 3600,
+                    'path' => '/',
+                    'domain' => '',
+                    'secure' => false,
+                    'httponly' => true,
+                    'samesite' => 'Lax'
+                ]);
+                setcookie('auth_token', '', [
+                    'expires' => time() - 3600,
+                    'path' => '/Game_Store/',
+                    'domain' => '',
+                    'secure' => false,
+                    'httponly' => true,
+                    'samesite' => 'Lax'
+                ]);
+            } else {
+                setcookie('auth_token', '', time() - 3600, '/');
+                setcookie('auth_token', '', time() - 3600, '/Game_Store/');
+            }
         }
 
         // Clear session
