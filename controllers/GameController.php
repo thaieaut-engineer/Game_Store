@@ -35,6 +35,9 @@ class GameController
         $categoryId = $_GET['category'] ?? null;
         $type = $_GET['type'] ?? '';
 
+        // Dùng để render bộ lọc
+        $allCategories = $this->categoryModel->getAllNoPagination();
+
         if (!empty($search)) {
             $result = $this->gameModel->search($search, $page, 12);
         } elseif ($type === 'recommended') {
@@ -48,6 +51,7 @@ class GameController
             $pageTitle = 'Game Sắp Ra Mắt';
         } else {
             $result = $this->gameModel->getAll($page, 12, $search, $categoryId);
+            $pageTitle = 'Danh sách Game';
         }
 
         $currentCategory = null;

@@ -4,12 +4,61 @@ require_once __DIR__ . '/../layout/header.php';
 ?>
 
 <div class="container my-5">
-    <h2 class="mb-4">
-        Danh Sách Game
-        <?php if (!empty($currentCategory)): ?>
-            <small class="text-muted">/ <?php echo htmlspecialchars($currentCategory['name']); ?></small>
-        <?php endif; ?>
+    <h2 class="mb-4 d-flex justify-content-between align-items-center">
+        <span>
+            Danh Sách Game
+            <?php if (!empty($currentCategory)): ?>
+                <small class="text-muted">/ <?php echo htmlspecialchars($currentCategory['name']); ?></small>
+            <?php endif; ?>
+        </span>
     </h2>
+
+    <!-- Bộ lọc -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <form class="row g-3 align-items-end" method="GET" action="<?php echo BASE_URL; ?>game">
+                <div class="col-md-4">
+                    <label class="form-label">Từ khóa</label>
+                    <input type="text" name="search" class="form-control" placeholder="Nhập tên game..."
+                        value="<?php echo htmlspecialchars($_GET['search'] ?? ''); ?>">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Chủ đề</label>
+                    <select name="category" class="form-select">
+                        <option value="">Tất cả</option>
+                        <?php if (!empty($allCategories)): ?>
+                            <?php foreach ($allCategories as $cat): ?>
+                                <option value="<?php echo (int) $cat['id']; ?>"
+                                    <?php echo (!empty($_GET['category']) && $_GET['category'] == $cat['id']) ? 'selected' : ''; ?>>
+                                    <?php echo htmlspecialchars($cat['name']); ?>
+                                </option>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Loại</label>
+                    <select name="type" class="form-select">
+                        <option value="">Tất cả</option>
+                        <option value="recommended" <?php echo (($_GET['type'] ?? '') === 'recommended') ? 'selected' : ''; ?>>
+                            Game đề xuất
+                        </option>
+                        <option value="sale" <?php echo (($_GET['type'] ?? '') === 'sale') ? 'selected' : ''; ?>>
+                            Đang giảm giá
+                        </option>
+                        <option value="upcoming" <?php echo (($_GET['type'] ?? '') === 'upcoming') ? 'selected' : ''; ?>>
+                            Sắp ra mắt
+                        </option>
+                    </select>
+                </div>
+                <div class="col-md-2 d-flex gap-2">
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="bi bi-funnel"></i> Lọc
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <div class="row">
         <?php if (empty($result['data'])): ?>
@@ -79,24 +128,29 @@ require_once __DIR__ . '/../layout/header.php';
 <?php if ($result['total_pages'] > 1): ?>
     <nav aria-label="Page navigation">
         <ul class="pagination justify-content-center">
+            <?php
+            $searchParam = !empty($_GET['search']) ? '&search=' . urlencode($_GET['search']) : '';
+            $categoryParam = !empty($_GET['category']) ? '&category=' . urlencode($_GET['category']) : '';
+            $typeParam = !empty($_GET['type']) ? '&type=' . urlencode($_GET['type']) : '';
+            ?>
             <?php if ($result['page'] > 1): ?>
                 <li class="page-item">
                     <a class="page-link"
-                        href="?page=<?php echo $result['page'] - 1; ?><?php echo !empty($search) ? '&search=' . urlencode($search) : ''; ?><?php echo !empty($_GET['category']) ? '&category=' . urlencode($_GET['category']) : ''; ?>">Trước</a>
+                        href="?page=<?php echo $result['page'] - 1; ?><?php echo $searchParam . $categoryParam . $typeParam; ?>">Trước</a>
                 </li>
             <?php endif; ?>
 
             <?php for ($i = 1; $i <= $result['total_pages']; $i++): ?>
                 <li class="page-item <?php echo $i == $result['page'] ? 'active' : ''; ?>">
                     <a class="page-link"
-                        href="?page=<?php echo $i; ?><?php echo !empty($search) ? '&search=' . urlencode($search) : ''; ?><?php echo !empty($_GET['category']) ? '&category=' . urlencode($_GET['category']) : ''; ?>"><?php echo $i; ?></a>
+                        href="?page=<?php echo $i; ?><?php echo $searchParam . $categoryParam . $typeParam; ?>"><?php echo $i; ?></a>
                 </li>
             <?php endfor; ?>
 
             <?php if ($result['page'] < $result['total_pages']): ?>
                 <li class="page-item">
                     <a class="page-link"
-                        href="?page=<?php echo $result['page'] + 1; ?><?php echo !empty($search) ? '&search=' . urlencode($search) : ''; ?><?php echo !empty($_GET['category']) ? '&category=' . urlencode($_GET['category']) : ''; ?>">Sau</a>
+                        href="?page=<?php echo $result['page'] + 1; ?><?php echo $searchParam . $categoryParam . $typeParam; ?>">Sau</a>
                 </li>
             <?php endif; ?>
         </ul>
