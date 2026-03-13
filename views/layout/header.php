@@ -14,7 +14,7 @@
 </head>
 
 <body class="d-flex flex-column min-vh-100 dark-theme">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark main-navbar" style="z-index: 1030;">
         <div class="container">
             <a class="navbar-brand" href="<?php echo BASE_URL; ?>">
                 <i class="bi bi-controller"></i> Game Store
@@ -234,3 +234,39 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
     <?php endif; ?>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var navbar = document.querySelector('.main-navbar');
+            if (navbar) {
+                var lastScrollTop = 0;
+                var navbarHeight = navbar.offsetHeight;
+
+                window.addEventListener('scroll', function() {
+                    var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                    
+                    if (scrollTop > navbarHeight * 2) {
+                        // We are scrolled out of the top area
+                        document.body.style.paddingTop = navbarHeight + 'px';
+                        
+                        if (scrollTop > lastScrollTop) {
+                            // Scrolling Down
+                            navbar.classList.remove('navbar-scrolled');
+                            navbar.classList.add('navbar-hidden');
+                        } else {
+                            // Scrolling Up
+                            navbar.classList.remove('navbar-hidden');
+                            navbar.classList.add('navbar-scrolled');
+                        }
+                    } else if (scrollTop <= navbarHeight) {
+                        // At the very top
+                        navbar.classList.remove('navbar-scrolled');
+                        navbar.classList.remove('navbar-hidden');
+                        document.body.style.paddingTop = '0';
+                    }
+                    
+                    lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+                }, false);
+            }
+        });
+    </script>

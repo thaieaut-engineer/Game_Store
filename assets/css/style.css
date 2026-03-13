@@ -167,6 +167,35 @@ body>nav~*:not(footer) {
     flex: 1 0 auto;
 }
 
+/* Navbar Scroll Effect */
+/* Navbar Scroll Effect */
+.navbar {
+    transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out;
+}
+
+.navbar.navbar-scrolled {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1030;
+    background-color: rgba(33, 37, 41, 0.95) !important;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5) !important;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    transform: translateY(0);
+}
+
+.navbar.navbar-hidden {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1030;
+    transform: translateY(-100%);
+}
+
 /* Footer always at bottom */
 footer {
     flex-shrink: 0;
