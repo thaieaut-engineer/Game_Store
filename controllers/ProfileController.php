@@ -60,6 +60,11 @@ class ProfileController {
             
             $user = getCurrentUser();
             if ($this->userModel->update($user['id'], $name, $avatar)) {
+                // Cập nhật lại session để header và toàn site thấy avatar mới ngay lập tức
+                $_SESSION['user_name'] = $name;
+                if ($avatar) {
+                    $_SESSION['user_avatar'] = $avatar;
+                }
                 $_SESSION['success'] = 'Cập nhật thành công';
             } else {
                 $_SESSION['error'] = 'Có lỗi xảy ra';
