@@ -26,8 +26,8 @@ class ReviewController {
                 redirect('game/detail?slug=' . ($_POST['game_slug'] ?? ''));
             }
             
-            if ($rating < 1 || $rating > 10) {
-                $_SESSION['error'] = 'Đánh giá phải từ 1 đến 10';
+            if ($rating < 1 || $rating > 5) {
+                $_SESSION['error'] = 'Đánh giá phải từ 1 đến 5';
                 redirect('game/detail?slug=' . ($_POST['game_slug'] ?? ''));
             }
             

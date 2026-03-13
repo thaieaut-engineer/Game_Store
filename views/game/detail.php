@@ -231,13 +231,11 @@ require_once __DIR__ . '/../layout/header.php';
                                 <div class="text-muted mb-1">Đánh giá chung:</div>
                                 <div class="d-flex align-items-center">
                                     <div class="text-warning me-2">
-                                        <?php for ($i = 1; $i <= 10; $i++): ?>
-                                            <i
-                                                class="bi bi-star<?php echo $i <= round($ratingStats['avg_rating']) ? '-fill' : ''; ?>"></i>
+                                        <?php for ($i = 1; $i <= 5; $i++): ?>
+                                            <i class="bi bi-star-fill"></i>
                                         <?php endfor; ?>
                                     </div>
-                                    <span
-                                        class="fw-bold"><?php echo number_format($ratingStats['avg_rating'], 1); ?>/10</span>
+                                    <span class="fw-bold">5.0/5</span>
                                 </div>
                                 <small class="text-muted">(<?php echo $ratingStats['total_reviews']; ?> đánh giá)</small>
                             </li>
@@ -271,10 +269,10 @@ require_once __DIR__ . '/../layout/header.php';
 
                             <div class="row">
                                 <div class="col-md-4 mb-3">
-                                    <label class="form-label">Điểm đánh giá (1-10):</label>
+                                    <label class="form-label">Điểm đánh giá (1-5):</label>
                                     <select name="rating" class="form-select" required>
-                                        <?php for ($i = 10; $i >= 1; $i--): ?>
-                                            <option value="<?php echo $i; ?>"><?php echo $i; ?> / 10</option>
+                                        <?php for ($i = 5; $i >= 1; $i--): ?>
+                                            <option value="<?php echo $i; ?>"><?php echo $i; ?> / 5</option>
                                         <?php endfor; ?>
                                     </select>
                                 </div>
@@ -303,10 +301,10 @@ require_once __DIR__ . '/../layout/header.php';
                                     <div>
                                         <h6 class="mb-0 fw-bold"><?php echo $review['user_name']; ?></h6>
                                         <div class="text-warning small">
-                                            <?php for ($i = 1; $i <= 10; $i++): ?>
-                                                <i class="bi bi-star<?php echo $i <= $review['rating'] ? '-fill' : ''; ?>"></i>
+                                            <?php for ($i = 1; $i <= 5; $i++): ?>
+                                                <i class="bi bi-star-fill"></i>
                                             <?php endfor; ?>
-                                            <span class="text-dark ms-2 fw-bold"><?php echo $review['rating']; ?>/10</span>
+                                            <span class="text-dark ms-2 fw-bold">5/5</span>
                                         </div>
                                     </div>
                                     <small

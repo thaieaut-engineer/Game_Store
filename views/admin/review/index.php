@@ -10,7 +10,7 @@ require_once __DIR__ . '/../layout/header.php';
 <div class="mb-3">
     <label>Lọc theo điểm đánh giá:</label>
     <a href="?" class="btn btn-sm btn-secondary">Tất cả</a>
-    <?php for ($i = 1; $i <= 10; $i++): ?>
+    <?php for ($i = 1; $i <= 5; $i++): ?>
         <a href="?rating=<?php echo $i; ?>" class="btn btn-sm btn-outline-primary"><?php echo $i; ?></a>
     <?php endfor; ?>
 </div>
@@ -40,7 +40,7 @@ require_once __DIR__ . '/../layout/header.php';
                         <td><?php echo $review['user_name']; ?></td>
                         <td><?php echo $review['game_title']; ?></td>
                         <td>
-                            <span class="badge bg-warning"><?php echo $review['rating']; ?>/10</span>
+                            <span class="badge bg-warning"><?php echo $review['rating']; ?>/5</span>
                         </td>
                         <td><?php echo substr($review['comment'], 0, 100); ?>...</td>
                         <td><?php echo date('d/m/Y H:i', strtotime($review['created_at'])); ?></td>
