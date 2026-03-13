@@ -199,5 +199,12 @@ class Game extends BaseModel {
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC)['total'];
     }
+
+    public function getAllForExport() {
+        $query = "SELECT id, title, price, sale_price, discount_percent, total_sales, is_upcoming, created_at FROM games ORDER BY created_at DESC";
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
 ?>

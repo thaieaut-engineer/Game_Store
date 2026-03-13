@@ -5,6 +5,9 @@ require_once __DIR__ . '/layout/header.php';
 
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <h1 class="h2">Tổng Quan</h1>
+    <a href="<?php echo BASE_URL; ?>admin/export/revenue" class="btn btn-success">
+        <i class="bi bi-file-earmark-excel"></i> Xuất Excel Doanh Thu
+    </a>
 </div>
 
 <!-- Statistics Cards -->

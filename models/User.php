@@ -57,6 +57,13 @@ class User extends BaseModel {
         $query = "SELECT id, name, email, avatar, role, status, created_at FROM users ORDER BY created_at DESC";
         return $this->paginate($query, [], $page, $perPage);
     }
+
+    public function getAllForExport() {
+        $query = "SELECT id, name, email, role, status, created_at FROM users ORDER BY created_at DESC";
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
     
     public function updateStatus($id, $status) {
         $query = "UPDATE users SET status = :status WHERE id = :id";

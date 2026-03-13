@@ -65,6 +65,9 @@ $routes = [
     'admin/support/detail' => ['AdminSupportController', 'detail'],
     'admin/support/update-status' => ['AdminSupportController', 'updateStatus'],
     'admin/support/delete' => ['AdminSupportController', 'delete'],
+    'admin/export/users'   => ['AdminExportController', 'exportUsers'],
+    'admin/export/games'   => ['AdminExportController', 'exportGames'],
+    'admin/export/revenue' => ['AdminExportController', 'exportRevenue'],
     'library' => ['LibraryController', 'index']
 ];
 

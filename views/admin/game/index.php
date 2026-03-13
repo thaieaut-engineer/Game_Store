@@ -5,9 +5,14 @@ require_once __DIR__ . '/../layout/header.php';
 
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <h1 class="h2">Quản Lý Game</h1>
-    <a href="<?php echo BASE_URL; ?>admin/game/create" class="btn btn-primary">
-        <i class="bi bi-plus-circle"></i> Thêm Game
-    </a>
+    <div class="d-flex gap-2">
+        <a href="<?php echo BASE_URL; ?>admin/export/games" class="btn btn-success">
+            <i class="bi bi-file-earmark-excel"></i> Xuất Excel
+        </a>
+        <a href="<?php echo BASE_URL; ?>admin/game/create" class="btn btn-primary">
+            <i class="bi bi-plus-circle"></i> Thêm Game
+        </a>
+    </div>
 </div>
 
 <div class="mb-3">
