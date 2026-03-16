@@ -247,15 +247,26 @@ require_once __DIR__ . '/../layout/header.php';
                     <h5 class="border-bottom pb-2 mb-3">Thông Tin Chi Tiết</h5>
                     <ul class="list-unstyled">
                         <?php if ($ratingStats && $ratingStats['total_reviews'] > 0): ?>
+                            <?php
+                            $avgRating = round($ratingStats['avg_rating'], 1);
+                            $fullStars = floor($ratingStats['avg_rating']);
+                            $halfStar = ($ratingStats['avg_rating'] - $fullStars) >= 0.5;
+                            ?>
                             <li class="mb-3 border-bottom pb-2">
                                 <div class="text-muted mb-1">Đánh giá chung:</div>
                                 <div class="d-flex align-items-center">
                                     <div class="text-warning me-2">
                                         <?php for ($i = 1; $i <= 5; $i++): ?>
-                                            <i class="bi bi-star-fill"></i>
+                                            <?php if ($i <= $fullStars): ?>
+                                                <i class="bi bi-star-fill"></i>
+                                            <?php elseif ($halfStar && $i === $fullStars + 1): ?>
+                                                <i class="bi bi-star-half"></i>
+                                            <?php else: ?>
+                                                <i class="bi bi-star"></i>
+                                            <?php endif; ?>
                                         <?php endfor; ?>
                                     </div>
-                                    <span class="fw-bold">5.0/5</span>
+                                    <span class="fw-bold"><?php echo $avgRating; ?>/5</span>
                                 </div>
                                 <small class="text-muted">(<?php echo $ratingStats['total_reviews']; ?> đánh giá)</small>
                             </li>
@@ -321,10 +332,17 @@ require_once __DIR__ . '/../layout/header.php';
                                     <div>
                                         <h6 class="mb-0 fw-bold"><?php echo $review['user_name']; ?></h6>
                                         <div class="text-warning small">
+                                            <?php
+                                            $userFullStars = (int) $review['rating'];
+                                            ?>
                                             <?php for ($i = 1; $i <= 5; $i++): ?>
-                                                <i class="bi bi-star-fill"></i>
+                                                <?php if ($i <= $userFullStars): ?>
+                                                    <i class="bi bi-star-fill"></i>
+                                                <?php else: ?>
+                                                    <i class="bi bi-star"></i>
+                                                <?php endif; ?>
                                             <?php endfor; ?>
-                                            <span class="text-dark ms-2 fw-bold">5/5</span>
+                                            <span class="text-dark ms-2 fw-bold"><?php echo (int)$review['rating']; ?>/5</span>
                                         </div>
                                     </div>
                                     <small
